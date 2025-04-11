@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 
 public enum RiskLevel {
     NONE(BigDecimal.valueOf(0)),
-    LOW(BigDecimal.valueOf(0.25)),
-    MEDIUM(BigDecimal.valueOf(0.5)),
-    HIGH(BigDecimal.valueOf(0.75));
+    LOW(BigDecimal.valueOf(1)),
+    MEDIUM(BigDecimal.valueOf(2)),
+    HIGH(BigDecimal.valueOf(3));
     private final BigDecimal level;
 
     RiskLevel(BigDecimal level) {

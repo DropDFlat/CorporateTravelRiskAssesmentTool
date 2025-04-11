@@ -2,9 +2,9 @@ package hr.java.corporate_travel_risk_assessment_tool.model;
 
 public abstract class Person extends Entity {
     private String name;
-    private int age;
+    private Integer age;
 
-    public Person(Long id, String name, int age) {
+    protected Person(Long id, String name, Integer age) {
         super(id);
         this.name = name;
         this.age = age;
@@ -18,11 +18,11 @@ public abstract class Person extends Entity {
         this.name = name;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 }

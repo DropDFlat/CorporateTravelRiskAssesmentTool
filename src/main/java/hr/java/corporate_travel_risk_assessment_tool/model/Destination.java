@@ -1,11 +1,11 @@
 package hr.java.corporate_travel_risk_assessment_tool.model;
 
-import java.util.List;
+import java.util.Set;
 
 public class Destination extends Entity{
     private String country;
     private String city;
-    private List<TravelRisk> risks;
+    private Set<TravelRisk> risks;
 
     public Destination(Builder builder) {
         super(builder.id);
@@ -30,11 +30,11 @@ public class Destination extends Entity{
         this.city = city;
     }
 
-    public List<TravelRisk> getRisks() {
+    public Set<TravelRisk> getRisks() {
         return risks;
     }
 
-    public void setRisks(List<TravelRisk> risks) {
+    public void setRisks(Set<TravelRisk> risks) {
         this.risks = risks;
     }
 
@@ -46,7 +46,7 @@ public class Destination extends Entity{
         private Long id;
         private String country;
         private String city;
-        private List<TravelRisk> risks;
+        private Set<TravelRisk> risks;
 
         public Builder setId(Long id) {
             this.id = id;
@@ -63,7 +63,7 @@ public class Destination extends Entity{
             return this;
         }
 
-        public Builder setRisks(List<TravelRisk> risks) {
+        public Builder setRisks(Set<TravelRisk> risks) {
             this.risks = risks;
             return this;
         }

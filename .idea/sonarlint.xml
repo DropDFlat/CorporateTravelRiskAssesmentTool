@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SonarLintProjectSettings">
+    <option name="moduleMapping">
+      <map>
+        <entry key="Corporate_Travel_Risk_Assessment_Tool" value="Corporate_Travel_Risk_Assesment_Tool" />
+      </map>
+    </option>
+  </component>
+</project>
