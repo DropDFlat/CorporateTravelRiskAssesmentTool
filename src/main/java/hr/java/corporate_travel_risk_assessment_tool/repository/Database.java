@@ -11,12 +11,15 @@ import java.util.Properties;
 
 public class Database {
     private static Boolean DATABASE_ACCESS_IN_PROGRESS = false;
-    private Connection connectToDatabase() throws IOException, SQLException {
+    private static Connection connectToDatabase() throws IOException, SQLException {
         Properties properties = new Properties();
-        properties.load(new FileReader("database.properties"));
+        properties.load(new FileInputStream("database.properties"));
         return DriverManager.getConnection(
                 properties.getProperty("databaseUrl"),
                 properties.getProperty("username"),
                 properties.getProperty("password"));
+    }
+    private void disconnectFromDatabase(Connection connection) throws SQLException {
+        connection.close();
     }
 }
