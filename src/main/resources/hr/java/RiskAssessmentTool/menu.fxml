@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+
+<MenuBar prefHeight="25.0" prefWidth="713.0" xmlns="http://javafx.com/javafx/23.0.1"
+         xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.java.corporate_travel_risk_assessment_tool.controller.MenuController">
+  <menus>
+    <Menu mnemonicParsing="false" text="Users">
+      <items>
+        <MenuItem fx:id="userSearch" mnemonicParsing="false" text="Search" onAction="#showUserSearch"/>
+            <MenuItem fx:id="userCreate" mnemonicParsing="false" text="Create" />
+      </items>
+    </Menu>
+    <Menu mnemonicParsing="false" text="Destinations">
+      <items>
+        <MenuItem fx:id="destinationSearch" mnemonicParsing="false" text="Search" onAction="#showDestinationSearch"/>
+            <MenuItem fx:id="destinationCreate" mnemonicParsing="false" text="Create" />
+      </items>
+    </Menu>
+      <Menu mnemonicParsing="false" text="Risks">
+         <items>
+            <MenuItem fx:id="riskSearch" mnemonicParsing="false" text="Search" />
+            <MenuItem fx:id="riskCreate" mnemonicParsing="false" text="Create" />
+         </items>
+      </Menu>
+    <Menu mnemonicParsing="false" text="Trips">
+      <items>
+        <MenuItem fx:id="tripSearch" mnemonicParsing="false" text="Search" />
+            <MenuItem fx:id="tripPlan" mnemonicParsing="false" text="Plan trip" />
+      </items>
+    </Menu>
+  </menus>
+</MenuBar>
