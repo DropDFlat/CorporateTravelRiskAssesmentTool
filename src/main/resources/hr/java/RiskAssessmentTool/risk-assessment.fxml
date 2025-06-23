@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<GridPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.java.corporatetravelriskassessmenttool.controller.RiskAssessmentController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="64.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="111.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="334.0" minHeight="0.0" prefHeight="25.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="308.0" minHeight="6.0" prefHeight="40.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="308.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="308.0" minHeight="9.0" prefHeight="40.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="308.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="308.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="300.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <Label text="Risk Assessment" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <TableView fx:id="assessmentTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="9">
+        <columns>
+          <TableColumn fx:id="employeeTableColumn" prefWidth="111.0" text="Employee" />
+          <TableColumn fx:id="riskTypeTableColumn" prefWidth="95.0" text="Risk type" />
+            <TableColumn fx:id="riskScoreTableColumn" prefWidth="86.0" text="Risk score" />
+            <TableColumn fx:id="assessmentDateTableColumn" prefWidth="130.0" text="Assessment date" />
+            <TableColumn fx:id="descriptionTableColumn" prefWidth="227.0" text="Report" />
+        </columns>
+      </TableView>
+      <ComboBox fx:id="tripComboBox" onAction="#tripSelected" prefHeight="25.0" prefWidth="444.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets left="10.0" right="10.0" />
+         </GridPane.margin>
+      </ComboBox>
+      <Label text="Trip:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+      <Button mnemonicParsing="false" onAction="#generateAssessments" text="Generate Assessment" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+      <Label fx:id="statusLabel" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+      <Label text="Employee:" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+      <Label text="Risk type" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+      <Label text="Risk score:" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
+      <Label text="Assessment date:" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
+      <Button mnemonicParsing="false" onAction="#filterAssessments" text="Search" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
+         <GridPane.margin>
+            <Insets right="20.0" />
+         </GridPane.margin>
+      </Button>
+      <Button mnemonicParsing="false" onAction="#deleteAssessment" text="Delete" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="8">
+         <GridPane.margin>
+            <Insets left="20.0" />
+         </GridPane.margin>
+      </Button>
+      <TextField fx:id="riskScoreTextField" GridPane.columnIndex="1" GridPane.rowIndex="6">
+         <GridPane.margin>
+            <Insets left="10.0" right="10.0" />
+         </GridPane.margin>
+      </TextField>
+      <DatePicker fx:id="assessmentDatePicker" prefHeight="25.0" prefWidth="380.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+         <GridPane.margin>
+            <Insets left="10.0" right="10.0" />
+         </GridPane.margin>
+      </DatePicker>
+      <ComboBox fx:id="employeeComboBox" prefHeight="25.0" prefWidth="418.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+         <GridPane.margin>
+            <Insets left="10.0" right="10.0" />
+         </GridPane.margin>
+      </ComboBox>
+      <ComboBox fx:id="riskTypeComboBox" prefHeight="25.0" prefWidth="418.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+         <GridPane.margin>
+            <Insets left="10.0" right="10.0" />
+         </GridPane.margin>
+      </ComboBox>
+   </children>
+</GridPane>

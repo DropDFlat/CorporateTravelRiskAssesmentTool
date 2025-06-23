@@ -4,32 +4,47 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 
-<MenuBar prefHeight="25.0" prefWidth="713.0" xmlns="http://javafx.com/javafx/23.0.1"
-         xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.java.corporate_travel_risk_assessment_tool.controller.MenuController">
+<MenuBar minHeight="-Infinity" prefHeight="25.0" prefWidth="713.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.java.corporatetravelriskassessmenttool.controller.MenuController">
   <menus>
-    <Menu mnemonicParsing="false" text="Users">
+      <Menu mnemonicParsing="false" text="File">
+         <items>
+            <MenuItem mnemonicParsing="false" onAction="#logout" text="Logout" />
+            <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit" />
+         </items>
+      </Menu>
+    <Menu mnemonicParsing="false" text="Employees">
       <items>
-        <MenuItem fx:id="userSearch" mnemonicParsing="false" text="Search" onAction="#showUserSearch"/>
-            <MenuItem fx:id="userCreate" mnemonicParsing="false" text="Create" />
+        <MenuItem fx:id="userSearch" mnemonicParsing="false" onAction="#showEmployeeSearch" text="Search" />
+            <MenuItem fx:id="userCreate" mnemonicParsing="false" onAction="#showEmployeeCreate" text="Create" />
       </items>
     </Menu>
     <Menu mnemonicParsing="false" text="Destinations">
       <items>
-        <MenuItem fx:id="destinationSearch" mnemonicParsing="false" text="Search" onAction="#showDestinationSearch"/>
-            <MenuItem fx:id="destinationCreate" mnemonicParsing="false" text="Create" />
+        <MenuItem fx:id="destinationSearch" mnemonicParsing="false" onAction="#showDestinationSearch" text="Search" />
+            <MenuItem fx:id="destinationCreate" mnemonicParsing="false" onAction="#showDestinationCreate" text="Create" />
       </items>
     </Menu>
       <Menu mnemonicParsing="false" text="Risks">
          <items>
-            <MenuItem fx:id="riskSearch" mnemonicParsing="false" text="Search" />
-            <MenuItem fx:id="riskCreate" mnemonicParsing="false" text="Create" />
+            <MenuItem fx:id="riskSearch" mnemonicParsing="false" onAction="#showRiskSearch" text="Search" />
+            <MenuItem fx:id="riskCreate" mnemonicParsing="false" onAction="#showRiskCreate" text="Create" />
          </items>
       </Menu>
     <Menu mnemonicParsing="false" text="Trips">
       <items>
-        <MenuItem fx:id="tripSearch" mnemonicParsing="false" text="Search" />
-            <MenuItem fx:id="tripPlan" mnemonicParsing="false" text="Plan trip" />
+        <MenuItem fx:id="tripSearch" mnemonicParsing="false" onAction="#showTripSearch" text="Search" />
+            <MenuItem fx:id="tripPlan" mnemonicParsing="false" onAction="#showTripPlan" text="Plan trip" />
       </items>
     </Menu>
+      <Menu mnemonicParsing="false" text="Risk Assessment">
+          <items>
+              <MenuItem mnemonicParsing="false" onAction="#showRiskAssessment" text="Search" />
+          </items>
+      </Menu>
+      <Menu mnemonicParsing="false" text="Changelog">
+          <items>
+              <MenuItem mnemonicParsing="false" onAction="#showChangelog" text="View changelog" />
+          </items>
+      </Menu>
   </menus>
 </MenuBar>
