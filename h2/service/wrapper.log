@@ -1,0 +1,16 @@
+STATUS | wrapper  | 2025/01/21 15:01:38 | --> Wrapper Started as Console
+STATUS | wrapper  | 2025/01/21 15:01:38 | Launching a JVM...
+INFO   | jvm 1    | 2025/01/21 15:01:39 | Wrapper (Version 3.2.3) http://wrapper.tanukisoftware.org
+INFO   | jvm 1    | 2025/01/21 15:01:39 |   Copyright 1999-2006 Tanuki Software, Inc.  All Rights Reserved.
+INFO   | jvm 1    | 2025/01/21 15:01:39 | 
+INFO   | jvm 1    | 2025/01/21 15:01:39 | WrapperSimpleApp: Unable to locate the class org.h2.tools.Server: java.lang.UnsupportedClassVersionError: org/h2/tools/Server has been compiled by a more recent version of the Java Runtime (class file version 55.0), this version of the Java Runtime only recognizes class file versions up to 52.0
+INFO   | jvm 1    | 2025/01/21 15:01:39 | 
+INFO   | jvm 1    | 2025/01/21 15:01:39 | WrapperSimpleApp Usage:
+INFO   | jvm 1    | 2025/01/21 15:01:39 |   java org.tanukisoftware.wrapper.WrapperSimpleApp {app_class} [app_arguments]
+INFO   | jvm 1    | 2025/01/21 15:01:39 | 
+INFO   | jvm 1    | 2025/01/21 15:01:39 | Where:
+INFO   | jvm 1    | 2025/01/21 15:01:39 |   app_class:      The fully qualified class name of the application to run.
+INFO   | jvm 1    | 2025/01/21 15:01:39 |   app_arguments:  The arguments that would normally be passed to the
+INFO   | jvm 1    | 2025/01/21 15:01:39 |                   application.
+STATUS | wrapper  | 2025/01/21 15:01:41 | <-- Wrapper Stopped
+FATAL  | wrapper  | 2025/01/21 15:01:44 | OpenSCManager failed - Access is denied. (0x5)

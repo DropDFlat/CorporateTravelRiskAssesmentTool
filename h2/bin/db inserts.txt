@@ -1,0 +1,59 @@
+INSERT INTO employees (name, date_of_birth, job_title, department, salary) VALUES
+('Alice Novak', '1993-08-12', 'Software Engineer', 'IT', 6500.00),
+('Marko Horvat', '1990-04-22', 'Data Analyst', 'Business Intelligence', 5400.00),
+('Ivana Petrović', '1982-12-01', 'HR Manager', 'Human Resources', 7200.00),
+('Luka Kovač', '1987-06-10', 'Network Administrator', 'IT', 5800.00),
+('Sara Babić', '1995-03-18', 'Marketing Specialist', 'Marketing', 5000.00);
+
+INSERT INTO risk (id, description, level, type) VALUES
+(1, 'Flood risk due to heavy rainfall', 'High', 'Environmental'),
+(2, 'Airborne disease outbreak', 'Medium', 'Health'),
+(3, 'Civil unrest in the region', 'High', 'Political'),
+(4, 'Wildfire risk due to drought', 'Medium', 'environmental'),
+(5, 'Water contamination', 'Low', 'Health');
+
+INSERT INTO environmental_risk (risk_id, damage_index, disaster_probability) VALUES
+(1, 90, 0.8),
+(4, 75, 0.6);
+
+INSERT INTO health_risk (risk_id, severity) VALUES
+(2, 0.7),
+(5, 0.3);
+
+INSERT INTO political_risk (risk_id, unrest_index, stability_index) VALUES
+(3, 85, 20);
+
+INSERT INTO destinations (id, city, country) VALUES
+(1, 'Jakarta', 'Indonesia'),
+(2, 'Cairo', 'Egypt'),
+(3, 'Los Angeles', 'USA'),
+(4, 'Rio de Janeiro', 'Brazil'),
+(5, 'Nairobi', 'Kenya');
+
+INSERT INTO destination_risk (destination_id, risk_id) VALUES
+(1, 1), -- Jakarta - Flood risk
+(1, 2), -- Jakarta - Airborne disease
+(2, 3), -- Cairo - Civil unrest
+(3, 5), -- Los Angeles - Water contamination
+(4, 4), -- Rio - Wildfire
+(5, 2), -- Nairobi - Airborne disease
+(5, 5); -- Nairobi - Water contamination
+
+INSERT INTO trip (id, name, start_date, end_date) VALUES
+(1, 'Jakarta Security Inspection', '2025-06-01', '2025-06-10'),
+(2, 'Cairo Engineering Survey', '2025-07-15', '2025-07-25'),
+(3, 'USA Expansion Tour', '2025-08-05', '2025-08-20');
+
+INSERT INTO trip_destination (trip_id, destination_id) VALUES
+(1, 1), -- Jakarta
+(2, 2), -- Cairo
+(3, 3), -- Los Angeles
+(3, 4); -- Rio de Janeiro
+
+INSERT INTO trip_employee (trip_id, employee_id) VALUES
+(1, 1),
+(1, 2),
+(2, 2),
+(2, 3),
+(3, 4),
+(3, 5);
