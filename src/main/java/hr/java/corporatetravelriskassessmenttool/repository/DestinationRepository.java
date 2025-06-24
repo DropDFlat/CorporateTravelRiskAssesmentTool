@@ -15,11 +15,23 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import static hr.java.corporatetravelriskassessmenttool.main.CorporateTravelRiskAssessmentApplication.changelogRepository;
-
+/**
+ * Repository class for managing {@link Destination} entities in the database.
+ * Provides thread-safe CRUD operations and manages associations with {@link Risk} entities.
+ *
+ * @param <T> the type of {@link Destination} managed by this repository
+ */
 public class DestinationRepository<T extends Destination> extends AbstractRepository<T> {
     private static final String DEST_ID = "destination_id";
     private static final String DATABASE_ERROR_STRING = "Database config failed";
-
+    /**
+     * Finds a destination by its ID.
+     *
+     * @param id the ID of the destination to find
+     * @return the destination with the specified ID
+     * @throws EmptyRepositoryException if no destination is found with the given ID
+     * @throws RepositoryAccessException if a database access error occurs
+     */
     @Override
     public synchronized T findById(Long id){
         waitForDbAccess();
@@ -58,7 +70,12 @@ public class DestinationRepository<T extends Destination> extends AbstractReposi
             notifyAll();
         }
     }
-
+    /**
+     * Retrieves all destinations from the database, including their associated risks.
+     *
+     * @return a list of all destinations
+     * @throws RepositoryAccessException if a database access error occurs
+     */
     @Override
     public synchronized List<T> findAll() {
         waitForDbAccess();
@@ -83,6 +100,14 @@ public class DestinationRepository<T extends Destination> extends AbstractReposi
         }
         return (List<T>) new ArrayList<>(destinationMap.values());
     }
+
+    /**
+     * Populates the risks for each destination in the provided map.
+     *
+     * @param conn the active database connection
+     * @param map a map of destination IDs to Destination objects
+     * @throws SQLException if a database access error occurs
+     */
     private void populateRisks(Connection conn, Map<Long, Destination> map)throws SQLException{
         String[] sqls = {"SELECT r.*, e.damage_index, e.disaster_probability, dr.destination_id " +
                 "FROM risk r JOIN environmental_risk e ON r.id = e.risk_id JOIN destination_risk dr ON r.id = dr.risk_id",
@@ -100,6 +125,14 @@ public class DestinationRepository<T extends Destination> extends AbstractReposi
             }
         }
     }
+    /**
+     * Saves a new destination and its associated risks in the database.
+     * The operation is performed in a transaction and logged.
+     *
+     * @param entity the destination entity to save
+     * @param user the user performing the operation
+     * @throws RepositoryAccessException if a database access error occurs
+     */
     @Override
     public synchronized void save(T entity, User user) {
         waitForDbAccess();
@@ -118,6 +151,18 @@ public class DestinationRepository<T extends Destination> extends AbstractReposi
         }
     }
 
+    /**
+     * Helper method to insert the destination and its risks into the database
+     * and logs it into the changelog.
+     *
+     * @param entity the destination entity
+     * @param destinationSql SQL statement for inserting destination
+     * @param riskSql SQL statement for inserting destination-risk relations
+     * @param con the active database connection
+     * @param user the user performing the operation
+     * @throws SQLException if a database error occurs (transaction rollback is performed)
+     * @throws RepositoryAccessException wrapping the SQLException
+     */
     private synchronized void insertDestination(T entity, String destinationSql, String riskSql, Connection con, User user) throws SQLException {
         try(PreparedStatement destinationStmt = con.prepareStatement(destinationSql, Statement.RETURN_GENERATED_KEYS);
             PreparedStatement riskStmt = con.prepareStatement(riskSql)){
@@ -144,7 +189,14 @@ public class DestinationRepository<T extends Destination> extends AbstractReposi
             throw new RepositoryAccessException(e);
         }
     }
-
+    /**
+     * Updates an existing destination and its associated risks in the database.
+     * The operation is logged into the changelog.
+     *
+     * @param entity the destination entity with updated data
+     * @param user the user performing the operation
+     * @throws RepositoryAccessException if a database access error occurs
+     */
     @Override
     public synchronized void update(T entity, User user) {
         Destination existingDestination = findById(entity.getId());
@@ -181,6 +233,13 @@ public class DestinationRepository<T extends Destination> extends AbstractReposi
         }
     }
 
+    /**
+     * Deletes a destination by its ID from the database and logs the deletion.
+     *
+     * @param id the ID of the destination to delete
+     * @param user the user performing the deletion
+     * @throws RepositoryAccessException if a database access error occurs
+     */
     @Override
     public synchronized void delete(Long id, User user) {
         waitForDbAccess();

@@ -15,10 +15,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static hr.java.corporatetravelriskassessmenttool.main.CorporateTravelRiskAssessmentApplication.changelogRepository;
-
+/**
+ * Repository class for managing {@link Employee} entities in the database.
+ * Provides thread-safe CRUD operations.
+ *
+ * @param <T> the type of {@link Employee} managed by this repository
+ */
 public class EmployeeRepository<T extends Employee> extends AbstractRepository<T> {
     private static final String DATABASE_ERROR_STRING = "Database config failed";
-
+    /**
+     * Finds an employee by its ID.
+     *
+     * @param id the ID of the employee to find
+     * @return the employee with the specified ID
+     * @throws EmptyRepositoryException if no employee is found with the given ID
+     * @throws RepositoryAccessException if a database access error occurs
+     */
     @Override
     public synchronized T findById(Long id) {
         waitForDbAccess();
@@ -42,7 +54,12 @@ public class EmployeeRepository<T extends Employee> extends AbstractRepository<T
             notifyAll();
         }
     }
-
+    /**
+     * Retrieves all employees from the database.
+     *
+     * @return a list of all employees
+     * @throws RepositoryAccessException if a database access error occurs
+     */
     @Override
     public synchronized List<T> findAll() {
         waitForDbAccess();
@@ -66,7 +83,14 @@ public class EmployeeRepository<T extends Employee> extends AbstractRepository<T
         }
         return employees;
     }
-
+    /**
+     * Saves a new employee entity into the database.
+     * Logs the creation event in the changelog.
+     *
+     * @param entity the employee entity to save
+     * @param user the user performing the save operation, for logging purposes
+     * @throws RepositoryAccessException if a database access error occurs
+     */
     @Override
     public synchronized void save(T entity, User user){
         waitForDbAccess();
@@ -95,7 +119,14 @@ public class EmployeeRepository<T extends Employee> extends AbstractRepository<T
             notifyAll();
         }
     }
-
+    /**
+     * Updates an existing employee entity in the database.
+     * Logs the update event in the changelog.
+     *
+     * @param entity the updated employee entity
+     * @param user the user performing the update operation, for logging purposes
+     * @throws RepositoryAccessException if a database access error occurs
+     */
     @Override
     public synchronized void update(T entity, User user) {
         Employee existingEmployee = findById(entity.getId());
@@ -122,7 +153,14 @@ public class EmployeeRepository<T extends Employee> extends AbstractRepository<T
             notifyAll();
         }
     }
-
+    /**
+     * Deletes an employee from the database by their unique ID.
+     * Logs the deletion event in the changelog.
+     *
+     * @param id the unique identifier of the employee to delete
+     * @param user the user performing the deletion operation, for logging purposes
+     * @throws RepositoryAccessException if a database access error occurs
+     */
     @Override
     public synchronized void delete(Long id, User user) {
         waitForDbAccess();

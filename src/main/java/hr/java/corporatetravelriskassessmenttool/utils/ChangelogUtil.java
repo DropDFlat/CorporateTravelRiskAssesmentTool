@@ -8,16 +8,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static hr.java.corporatetravelriskassessmenttool.main.CorporateTravelRiskAssessmentApplication.changelogRepository;
-
+/**
+ * Utility class providing static methods to log changes to various entities within the app.
+ * <p>
+ * This class helps track changes made by users to objects such as trips, destinations,
+ * risk assessments, and different types of risks (political, health, environmental),
+ * as well as employee records. Each method compares old and new versions of entities
+ * and logs the relevant field updates with timestamps and user information.
+ * </p>
+ */
 public class ChangelogUtil {
     private static final String ARROW =" → ";
     private static final String DESCRIPTION = "description: ";
     private static final String RISK_LEVEL = "risk_level: ";
+
+    /**
+     * Private constructor to prevent instantiation
+     */
     private ChangelogUtil() {}
+    /**
+     * Logs a creation event with specified user, action, and detail.
+     *
+     * @param user the user who performed the action
+     * @param action description of the action performed
+     * @param detail detailed information related to the action
+     */
     public static void logCreation(User user, String action, String detail) {
         changelogRepository.logChange(new ChangelogEntry(
                 user.username(), user.role(), action, detail, LocalDateTime.now()));
     }
+    /**
+     * Logs updates made to a {@link Trip} by comparing the old and new versions.
+     * Only changed fields are recorded.
+     *
+     * @param user the user who updated the trip
+     * @param oldTrip the trip object before changes
+     * @param newTrip the trip object after changes
+     */
     public static void logTripUpdate(User user, Trip<Person> oldTrip, Trip<Person> newTrip) {
         List<String> changes = new ArrayList<>();
         if (!oldTrip.getName().equals(newTrip.getName())) {
@@ -40,6 +67,14 @@ public class ChangelogUtil {
                     "Id: " + newTrip.getId() + " " + changes, LocalDateTime.now()));
         }
     }
+    /**
+     * Logs updates made to a {@link Destination} by comparing the old and new versions.
+     * Only changed fields are recorded.
+     *
+     * @param user the user who updated the destination
+     * @param oldDestination the destination object before changes
+     * @param newDestination the destination object after changes
+     */
     public static void logDestinationUpdate(User user, Destination oldDestination, Destination newDestination) {
         List<String> changes = new ArrayList<>();
         if (!oldDestination.getCity().equals(newDestination.getCity())) {
@@ -56,6 +91,14 @@ public class ChangelogUtil {
                     "Id: " + newDestination.getId() + " " + changes, LocalDateTime.now()));
         }
     }
+    /**
+     * Logs updates made to a {@link RiskAssessment} by comparing the old and new versions.
+     * Only changed fields are recorded.
+     *
+     * @param user the user who updated the assessment
+     * @param oldAssessment the assessment object before changes
+     * @param newAssessment the assessment object after changes
+     */
     public static void logAssessmentUpdate(User user, RiskAssessment<Person, Risk> oldAssessment, RiskAssessment<Person, Risk> newAssessment) {
         List<String> changes = new ArrayList<>();
         if (!oldAssessment.getAssessmentDate().equals(newAssessment.getAssessmentDate())) {
@@ -69,6 +112,14 @@ public class ChangelogUtil {
                     "Id: " + newAssessment.getId() + " " + changes, LocalDateTime.now()));
         }
     }
+    /**
+     * Logs updates made to a {@link PoliticalRisk} by comparing the old and new versions.
+     * Only changed fields are recorded.
+     *
+     * @param user the user who updated the political risk
+     * @param oldRisk the political risk object before changes
+     * @param newRisk the political risk object after changes
+     */
     public static void logPoliticalRiskUpdate(User user, PoliticalRisk oldRisk, PoliticalRisk newRisk){
         List<String> changes = new ArrayList<>();
         if (!oldRisk.getDescription().equals(newRisk.getDescription())) {
@@ -88,6 +139,14 @@ public class ChangelogUtil {
                     "Id: " + newRisk.getId() + " " + changes, LocalDateTime.now()));
         }
     }
+    /**
+     * Logs updates made to a {@link HealthRisk} by comparing the old and new versions.
+     * Only changed fields are recorded.
+     *
+     * @param user the user who updated the health risk
+     * @param oldRisk the health risk object before changes
+     * @param newRisk the health risk object after changes
+     */
     public static void logHealthRiskUpdate(User user, HealthRisk oldRisk, HealthRisk newRisk){
         List<String> changes = new ArrayList<>();
         if (!oldRisk.getDescription().equals(newRisk.getDescription())) {
@@ -104,6 +163,14 @@ public class ChangelogUtil {
                     "Id: " + newRisk.getId() + " " + changes, LocalDateTime.now()));
         }
     }
+    /**
+     * Logs updates made to an {@link EnvironmentalRisk} by comparing the old and new versions.
+     * Only changed fields are recorded.
+     *
+     * @param user the user who updated the environmental risk
+     * @param oldRisk the environmental risk object before changes
+     * @param newRisk the environmental risk object after changes
+     */
     public static void logEnvironmentalRiskUpdate(User user, EnvironmentalRisk oldRisk, EnvironmentalRisk newRisk){
         List<String> changes = new ArrayList<>();
         if (!oldRisk.getDescription().equals(newRisk.getDescription())) {
@@ -123,6 +190,15 @@ public class ChangelogUtil {
                     "Id: " + newRisk.getId() + " " + changes, LocalDateTime.now()));
         }
     }
+
+    /**
+     * Logs updates made to an {@link Employee} by comparing the old and new versions.
+     * Only changed fields are recorded.
+     *
+     * @param user the user who updated the employee
+     * @param oldEmployee the employee object before changes
+     * @param newEmployee the employee object after changes
+     */
     public static void logEmployeeUpdate(User user, Employee oldEmployee, Employee newEmployee){
         List<String> changes = new ArrayList<>();
         if (!oldEmployee.getName().equals(newEmployee.getName())) {

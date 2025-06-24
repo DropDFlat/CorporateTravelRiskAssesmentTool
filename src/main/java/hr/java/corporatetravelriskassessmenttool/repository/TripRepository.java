@@ -17,9 +17,24 @@ import java.util.*;
 
 
 import static hr.java.corporatetravelriskassessmenttool.main.CorporateTravelRiskAssessmentApplication.changelogRepository;
-
+/**
+ * Repository class responsible for CRUD operations on {@link Trip} entities.
+ * Handles persistence and retrieval of Trip data from the underlying database,
+ * including associated employees and destinations.
+ *
+ * @param <T> The type of Trip entity this repository manages, extending Trip<Person>.
+ */
 public class TripRepository<T extends Trip<Person>> extends AbstractRepository<T> {
     private static final String DATABASE_ERROR_STRING = "Database config failed";
+    /**
+     * Finds a Trip entity by its unique identifier.
+     * Fetches trip details along with associated employees and destinations.
+     *
+     * @param id the unique identifier of the trip
+     * @return the Trip entity corresponding to the given id
+     * @throws EmptyRepositoryException if no trip is found with the specified id
+     * @throws RepositoryAccessException if a database access error occurs
+     */
     @Override
     public synchronized T findById(Long id) {
         AbstractRepository<Risk> riskRepo = new RiskRepository<>();
@@ -48,7 +63,13 @@ public class TripRepository<T extends Trip<Person>> extends AbstractRepository<T
             notifyAll();
         }
     }
-
+    /**
+     * Retrieves all Trip entities from the database.
+     * Each trip includes its associated employees and destinations.
+     *
+     * @return a list of all Trip entities
+     * @throws RepositoryAccessException if a database access error occurs
+     */
     @Override
     public synchronized List<T> findAll() {
         AbstractRepository<Risk> riskRepo = new RiskRepository<>();
@@ -75,6 +96,15 @@ public class TripRepository<T extends Trip<Person>> extends AbstractRepository<T
         }
     }
 
+    /**
+     * Persists a new Trip entity into the database.
+     * Validates that the start date is not after the end date.
+     * Also saves associations with employees and destinations.
+     *
+     * @param entity the Trip entity to save
+     * @param user the User performing the operation (used for changelog)
+     * @throws RepositoryAccessException if a database access error occurs
+     */
     @Override
     public synchronized void save(T entity, User user) {
         Trip<Person> entityCast = entity;
@@ -109,7 +139,15 @@ public class TripRepository<T extends Trip<Person>> extends AbstractRepository<T
             notifyAll();
         }
     }
-
+    /**
+     * Updates an existing Trip entity in the database.
+     * Validates trip dates, updates trip data, deletes old relations,
+     * and saves updated employees and destinations.
+     *
+     * @param entity the Trip entity with updated data
+     * @param user the User performing the operation (used for changelog)
+     * @throws RepositoryAccessException if a database access error occurs
+     */
     @Override
     public synchronized void update(T entity, User user) {
         Trip<Person> existingTrip = findById(entity.getId());
@@ -136,7 +174,14 @@ public class TripRepository<T extends Trip<Person>> extends AbstractRepository<T
             notifyAll();
         }
     }
-
+    /**
+     * Deletes a Trip entity from the database by its id.
+     * Logs the deletion in the changelog repository.
+     *
+     * @param id the unique identifier of the trip to delete
+     * @param user the User performing the deletion (used for changelog)
+     * @throws RepositoryAccessException if a database access error occurs
+     */
     @Override
     public synchronized void delete(Long id, User user) {
         waitForDbAccess();
@@ -154,6 +199,14 @@ public class TripRepository<T extends Trip<Person>> extends AbstractRepository<T
             notifyAll();
         }
     }
+    /**
+     * Extracts Trip data from the current row of a ResultSet.
+     * Checks for invalid date ranges and adds a warning message if applicable.
+     *
+     * @param rs the ResultSet positioned at the current row
+     * @return a Trip entity constructed from the ResultSet data
+     * @throws SQLException if a database access error occurs
+     */
     private Trip<Person> extractTripFromResultSet(ResultSet rs) throws SQLException {
         Long id = rs.getLong("id");
         String name = rs.getString("name");
@@ -166,12 +219,29 @@ public class TripRepository<T extends Trip<Person>> extends AbstractRepository<T
         }
         return trip;
     }
+    /**
+     * Creates a fully populated Trip entity including employees and destinations
+     * by querying the database.
+     *
+     * @param con the active database connection
+     * @param rs the ResultSet positioned at the trip row
+     * @param allRisks list of all risks to associate with destinations
+     * @return a Trip entity with associated data
+     * @throws SQLException if a database access error occurs
+     */
     private Trip<Person> createTrip(Connection con, ResultSet rs, List<Risk> allRisks) throws SQLException{
         Trip<Person> trip = extractTripFromResultSet(rs);
         trip.setEmployees(TripDataFetcher.fetchEmployees(con, trip.getId()));
         trip.setDestinations(TripDataFetcher.fetchDestinations(con, trip.getId(), allRisks));
         return trip;
     }
+    /**
+     * Updates the main trip data (name, start date, end date) in the database.
+     *
+     * @param con the active database connection
+     * @param trip the Trip entity with updated data
+     * @throws SQLException if a database access error occurs
+     */
     private void updateTripData(Connection con, Trip<Person> trip) throws SQLException{
         try(PreparedStatement ps = con.prepareStatement("UPDATE trip SET name = ?, start_date = ?, end_date = ? WHERE id = ?")){
             ps.setString(1, trip.getName());
@@ -181,6 +251,13 @@ public class TripRepository<T extends Trip<Person>> extends AbstractRepository<T
             ps.executeUpdate();
         }
     }
+    /**
+     * Deletes old associations between a trip and its employees/destinations.
+     *
+     * @param con the active database connection
+     * @param tripId the id of the trip whose relations are to be deleted
+     * @throws SQLException if a database access error occurs
+     */
     private void deleteOldRelations(Connection con, Long tripId) throws SQLException {
         try (PreparedStatement ps1 = con.prepareStatement("DELETE FROM trip_employee WHERE trip_id = ?");
              PreparedStatement ps2 = con.prepareStatement("DELETE FROM trip_destination WHERE trip_id = ?")) {
@@ -190,6 +267,14 @@ public class TripRepository<T extends Trip<Person>> extends AbstractRepository<T
             ps2.executeUpdate();
         }
     }
+    /**
+     * Saves the associations between a trip and its employees and destinations in the database.
+     *
+     * @param con the active database connection
+     * @param tripId the id of the trip
+     * @param trip the Trip entity containing employees and destinations
+     * @throws SQLException if a database access error occurs
+     */
     private void saveEmployeesAndDestinations(Connection con, Long tripId, Trip<Person> trip) throws SQLException {
         try (PreparedStatement psEmp = con.prepareStatement("INSERT INTO trip_employee (trip_id, employee_id) VALUES (?, ?)")) {
             psEmp.setLong(1, tripId);

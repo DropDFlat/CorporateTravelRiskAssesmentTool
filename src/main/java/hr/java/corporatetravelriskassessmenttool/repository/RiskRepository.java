@@ -14,9 +14,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static hr.java.corporatetravelriskassessmenttool.main.CorporateTravelRiskAssessmentApplication.changelogRepository;
-
+/**
+ * Repository class for managing {@link Risk} entities in the database.
+ * <p>
+ * This class provides thread-safe CRUD operations for different types of risks:
+ * {@link HealthRisk},
+ * {@link PoliticalRisk},
+ * and {@link EnvironmentalRisk}.
+ * All changes are logged in the changelog system for auditing.
+ * <p>
+ *
+ * @param <T> the type of {@link Risk} this repository manages
+ */
 public class RiskRepository<T extends Risk> extends AbstractRepository<T> {
     private static final String DATABASE_ERROR_STRING = "Database config failed";
+    /**
+     * Finds a risk entity by its unique ID.
+     *
+     * @param id the unique identifier of the risk to find
+     * @return the risk entity with the specified ID
+     * @throws EmptyRepositoryException if no risk with the given ID is found
+     * @throws RepositoryAccessException if a database access error occurs or risk type is unknown
+     */
     @Override
     public synchronized T findById(Long id) {
         waitForDbAccess();
@@ -44,7 +63,12 @@ public class RiskRepository<T extends Risk> extends AbstractRepository<T> {
             notifyAll();
         }
     }
-
+    /**
+     * Retrieves all risks from the database, including environmental, health, and political risks.
+     *
+     * @return a list of all risks
+     * @throws RepositoryAccessException if a database access error occurs or risk type is unknown
+     */
     @Override
     public synchronized List<T> findAll() {
         waitForDbAccess();
@@ -70,6 +94,15 @@ public class RiskRepository<T extends Risk> extends AbstractRepository<T> {
             notifyAll();
         }
     }
+    /**
+     * Saves a new risk entity into the database.
+     * Delegates to specific handlers based on risk type.
+     *
+     * @param entity the risk entity to save
+     * @param user the user performing the save operation, used for logging
+     * @throws RepositoryAccessException if a database access error occurs
+     * @throws IllegalArgumentException if the risk type is unsupported
+     */
     @Override
     public synchronized void save(T entity, User user){
         waitForDbAccess();
@@ -91,7 +124,14 @@ public class RiskRepository<T extends Risk> extends AbstractRepository<T> {
             notifyAll();
         }
     }
-
+    /**
+     * Updates an existing risk entity in the database.
+     * Delegates to specific handlers based on risk type.
+     *
+     * @param entity the updated risk entity
+     * @param user the user performing the update operation, used for logging
+     * @throws RepositoryAccessException if a database access error occurs
+     */
     @Override
     public synchronized void update(T entity, User user) {
         Risk existingRisk= findById(entity.getId());
@@ -114,7 +154,14 @@ public class RiskRepository<T extends Risk> extends AbstractRepository<T> {
             notifyAll();
         }
     }
-
+    /**
+     * Deletes a risk entity from the database by its unique ID.
+     * Logs the deletion event in the changelog.
+     *
+     * @param id the unique identifier of the risk to delete
+     * @param user the user performing the deletion operation, used for logging
+     * @throws RepositoryAccessException if a database access error occurs
+     */
     @Override
     public synchronized void delete(Long id, User user) {
         waitForDbAccess();

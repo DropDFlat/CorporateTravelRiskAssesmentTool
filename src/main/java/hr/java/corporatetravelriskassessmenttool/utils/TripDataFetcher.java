@@ -12,9 +12,25 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
+/**
+ * Utility class responsible for fetching trip-related data from the database.
+ * Provides methods to retrieve employees and destinations associated with a given trip.
+ * This class is not instantiable.
+ */
 public class TripDataFetcher {
+    /**
+     * Private constructor to prevent instantiation
+     */
     private TripDataFetcher() {}
+
+    /**
+     * Fetches the set of employees participating in a specified trip.
+     *
+     * @param con the active database connection
+     * @param tripId the ID of the trip for which to fetch employees
+     * @return a set of {@link Person} objects representing employees linked to the trip
+     * @throws RepositoryAccessException if a database access error occurs
+     */
     public static Set<Person> fetchEmployees(Connection con, Long tripId) {
         Set<Person> employees = new HashSet<>();
         String sql = "SELECT e.id, e.name, e.salary, e.department, e.job_title, e.date_of_birth FROM employees e " +
@@ -30,6 +46,15 @@ public class TripDataFetcher {
         }
         return employees;
     }
+    /**
+     * Fetches the set of destinations associated with a specified trip, including their related risks.
+     *
+     * @param con the active database connection
+     * @param tripId the ID of the trip for which to fetch destinations
+     * @param allRisks the list of all available risks to be linked to destinations
+     * @return a set of {@link Destination} objects linked to the trip, each populated with associated risks
+     * @throws RepositoryAccessException if a database access error occurs
+     */
     public static Set<Destination> fetchDestinations(Connection con, Long tripId, List<Risk> allRisks) {
         Set<Destination> destinations = new HashSet<>();
         Map<Long, Destination> destinationMap = new HashMap<>();

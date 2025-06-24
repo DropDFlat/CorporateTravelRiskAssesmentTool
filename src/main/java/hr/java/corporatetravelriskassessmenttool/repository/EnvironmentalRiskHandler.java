@@ -9,10 +9,31 @@ import hr.java.corporatetravelriskassessmenttool.utils.ChangelogUtil;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
-
+/**
+ * Handler class responsible for managing persistence operations for {@link EnvironmentalRisk} entities.
+ * <p>
+ * This class encapsulates database save and update operations specific to environmental risks.
+ * <p>
+ * It also logs changes to the changelog system.
+ * Methods are synchronized to ensure thread safety during database interactions.
+ */
 public class EnvironmentalRiskHandler {
     private static final String DATABASE_ERROR_STRING = "Database config failed";
+    /**
+     * Saves a new {@link EnvironmentalRisk} entity into the database.
+     * <p>
+     * Inserts data into the "risk" table and the related "environmental_risk" table within a single transaction.
+     * If either insert fails, the transaction is rolled back.
+     * <p>
+     * Logs the creation event with details about the new environmental risk.
+     *
+     * @param envRisk the {@link EnvironmentalRisk} entity to save
+     * @param insertRiskSql the SQL insert statement for the "risk" table
+     * @param con the active database connection
+     * @param user the user performing the save operation, used for changelog logging
+     * @throws SQLException if a database access error occurs during insert operations
+     * @throws RepositoryAccessException if there is a database error or rollback occurs
+     */
     public synchronized void save(EnvironmentalRisk envRisk, String insertRiskSql, Connection con, User user) throws SQLException {
         String insertEnvSql = "INSERT INTO environmental_risk(risk_id, damage_index, disaster_probability) VALUES(?, ?, ?)";
         try (PreparedStatement riskStmt = con.prepareStatement(insertRiskSql, Statement.RETURN_GENERATED_KEYS);
@@ -45,6 +66,21 @@ public class EnvironmentalRiskHandler {
             con.setAutoCommit(true);
         }
     }
+    /**
+     * Updates an existing {@link EnvironmentalRisk} entity in the database.
+     * <p>
+     * Updates are performed within a transaction, modifying both the "risk" and "environmental_risk" tables.
+     * The method detects and logs any changes between the existing and updated entities.
+     * <p>
+     * If any update operation fails, the transaction is rolled back to maintain data consistency.
+     *
+     * @param updatedRisk the {@link EnvironmentalRisk} entity containing updated data
+     * @param existingRisk the current {@link EnvironmentalRisk} entity from the database before update
+     * @param con the active database connection
+     * @param user the user performing the update operation, used for changelog logging
+     * @throws SQLException if a database access error occurs during update operations
+     * @throws RepositoryAccessException if there is a database error or rollback occurs
+     */
     public synchronized void update(EnvironmentalRisk updatedRisk, EnvironmentalRisk existingRisk, Connection con, User user) throws SQLException {
         con.setAutoCommit(false);
         List<String> changes = new ArrayList<>();
