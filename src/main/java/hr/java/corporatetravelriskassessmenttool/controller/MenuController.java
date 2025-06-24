@@ -1,5 +1,6 @@
 package hr.java.corporatetravelriskassessmenttool.controller;
 
+import hr.java.corporatetravelriskassessmenttool.main.CorporateTravelRiskAssessmentApplication;
 import hr.java.corporatetravelriskassessmenttool.model.User;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -152,7 +153,7 @@ public class MenuController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/hr/java/RiskAssessmentTool/login-view.fxml"));
             Parent loginRoot = loader.load();
 
-            Stage stage = (Stage) dashboardController.getDashboardPane().getScene().getWindow();
+            Stage stage = CorporateTravelRiskAssessmentApplication.getMainStage();
 
             Scene loginScene = new Scene(loginRoot, 650, 750);
             stage.setScene(loginScene);

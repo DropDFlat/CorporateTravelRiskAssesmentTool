@@ -38,12 +38,12 @@
     </Menu>
       <Menu mnemonicParsing="false" text="Risk Assessment">
           <items>
-              <MenuItem mnemonicParsing="false" onAction="#showRiskAssessment" text="Search" />
+              <MenuItem mnemonicParsing="false" onAction="#showRiskAssessment" text="View" />
           </items>
       </Menu>
       <Menu mnemonicParsing="false" text="Changelog">
           <items>
-              <MenuItem mnemonicParsing="false" onAction="#showChangelog" text="View changelog" />
+              <MenuItem mnemonicParsing="false" onAction="#showChangelog" text="View" />
           </items>
       </Menu>
   </menus>

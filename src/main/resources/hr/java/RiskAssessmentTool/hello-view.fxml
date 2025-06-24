@@ -20,7 +20,7 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label text="Corporate Travel Risk Assessnent Tool" GridPane.columnSpan="2" GridPane.halignment="CENTER">
+      <Label text="Corporate Travel Risk Assessment Tool" GridPane.columnSpan="2" GridPane.halignment="CENTER">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
