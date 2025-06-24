@@ -70,7 +70,7 @@ public class FindHighestRiskTripThread implements Runnable {
                     ));
 
 
-            tripTableView.setItems(FXCollections.observableArrayList(allTrips));
+            tripSearchController.updateTrips(allTrips);
 
             if (selectedTripId != null) {
                 allTrips.stream()

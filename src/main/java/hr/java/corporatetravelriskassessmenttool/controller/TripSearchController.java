@@ -69,8 +69,25 @@ public class TripSearchController implements RoleAware {
     AbstractRepository<Employee> employeeRepository = new EmployeeRepository<>();
     AbstractRepository<Destination> destinationRepository = new DestinationRepository<>();
     private Optional<Trip<Person>> riskiestTrip = Optional.empty();
+    private List<Trip<Person>> allTrips = new ArrayList<>();
+    private ObservableList<Trip<Person>> filteredTrips = FXCollections.observableArrayList();
+
+    /**
+     * Sets the currently identified riskiest trip to be highlighted in the table view.
+     *
+     * @param trip an {@code Optional} containing the riskiest trip, or empty if none is set
+     */
     public void setRiskiestTrip(Optional<Trip<Person>> trip){
         this.riskiestTrip = trip;
+    }
+    /**
+     * Updates the internal list of all trips and re-applies filters to refresh the table view.
+     *
+     * @param newTrips a list of updated {@code Trip} objects
+     */
+    public void updateTrips(List<Trip<Person>> newTrips){
+        this.allTrips = new ArrayList<>(newTrips);
+        filterTrips();
     }
     /**
      * Initializes the controller, loads all trips from the repository
@@ -93,11 +110,9 @@ public class TripSearchController implements RoleAware {
         employeeListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         destinationListView.setItems(FXCollections.observableList(destinations));
         destinationListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        tripTableView.setItems(trips);
-        tripTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
         nameTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-
         startDateTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStartDate().format(format)));
         endDateTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEndDate().format(format)));
         employeeTableColumn.setCellValueFactory(cellData -> {
@@ -112,6 +127,10 @@ public class TripSearchController implements RoleAware {
             );
             return new SimpleStringProperty(destinationString.toString());
         });
+        allTrips.addAll(trips);
+        filteredTrips.setAll(trips);
+        tripTableView.setItems(filteredTrips);
+        tripTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tripTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         tripTableView.setRowFactory(tv -> {
             TableRow<Trip<Person>> row = new TableRow<>() {
@@ -138,55 +157,35 @@ public class TripSearchController implements RoleAware {
 
             return row;
         });
-        FindHighestRiskTripThread thread = new FindHighestRiskTripThread(tripRepository, tripTableView, this);
-
-        Timeline riskiestTripTimeline = new Timeline(new KeyFrame(Duration.ZERO, e -> {
-            Thread runner = new Thread(thread);
-            runner.setDaemon(true);
-            runner.start();
-        }),
-                new KeyFrame(Duration.seconds(1)));
-        riskiestTripTimeline.setCycleCount(Animation.INDEFINITE);
-        riskiestTripTimeline.play();
-
+        startHighestRiskTimeline();
     }
 
     /**
      * Filter trips by entered search criteria
      */
     public void filterTrips() {
-        List<Trip<Person>> filteredTrips = tripRepository.findAll();
+        List<Trip<Person>> result = new ArrayList<>(allTrips);
         Set<Employee> selectedEmployees = new HashSet<>(employeeListView.getSelectionModel().getSelectedItems());
-        if(!selectedEmployees.isEmpty()) {
-            filteredTrips = filteredTrips.stream()
+        if(!selectedEmployees.isEmpty()) result = result.stream()
                     .filter(trip -> trip.getEmployees().stream().anyMatch(selectedEmployees::contains))
                     .toList();
-        }
         Set<Destination> selectedDestinations = new HashSet<>(destinationListView.getSelectionModel().getSelectedItems());
-        if(!selectedDestinations.isEmpty()) {
-            filteredTrips = filteredTrips.stream()
+        if(!selectedDestinations.isEmpty()) result = result.stream()
                     .filter(trip -> trip.getDestinations().stream().anyMatch(selectedDestinations::contains))
                     .toList();
-        }
         String name = nameTextField.getText();
-        if(!name.isEmpty()) {
-            filteredTrips = filteredTrips.stream()
+        if(!name.isEmpty()) result = result.stream()
                     .filter(trip -> trip.getName().toLowerCase().contains(name.toLowerCase()))
                     .toList();
-        }
         Optional<LocalDate> startDate = Optional.ofNullable(startDatePicker.getValue());
-        if(startDate.isPresent()) {
-            filteredTrips = filteredTrips.stream()
+        if(startDate.isPresent()) result = result.stream()
                     .filter(trip -> trip.getStartDate().isAfter(startDate.get()))
                     .toList();
-        }
         Optional<LocalDate> endDate = Optional.ofNullable(endDatePicker.getValue());
-        if(endDate.isPresent()) {
-            filteredTrips = filteredTrips.stream()
+        if(endDate.isPresent()) result = result.stream()
                     .filter(trip -> trip.getEndDate().isBefore(endDate.get()))
                     .toList();
-        }
-        tripTableView.setItems(FXCollections.observableList(filteredTrips));
+        tripTableView.setItems(FXCollections.observableList(result));
     }
 
     /**
@@ -219,11 +218,9 @@ public class TripSearchController implements RoleAware {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/hr/java/RiskAssessmentTool/trip-update.fxml"));
             Parent root = loader.load();
-
             TripUpdateController controller = loader.getController();
             controller.setUser(loggedUser);
             controller.setTrip(trip);
-
             Stage stage = new Stage();
             stage.setTitle("Update Trip");
             stage.setScene(new Scene(root));
@@ -237,7 +234,21 @@ public class TripSearchController implements RoleAware {
             ValidationUtils.showError("Error while updating trip", e.getMessage());
         }
     }
-
+    /**
+     * Starts a background timeline that continuously evaluates and highlights
+     * the riskiest trip in the table every second.
+     */
+    private void startHighestRiskTimeline(){
+        FindHighestRiskTripThread thread = new FindHighestRiskTripThread(tripRepository, tripTableView, this);
+        Timeline riskiestTripTimeline = new Timeline(new KeyFrame(Duration.ZERO, e -> {
+            Thread runner = new Thread(thread);
+            runner.setDaemon(true);
+            runner.start();
+        }),
+                new KeyFrame(Duration.seconds(1)));
+        riskiestTripTimeline.setCycleCount(Animation.INDEFINITE);
+        riskiestTripTimeline.play();
+    }
     /**
      * Updates the row style for a given trip in the table view.
      * <ul>
