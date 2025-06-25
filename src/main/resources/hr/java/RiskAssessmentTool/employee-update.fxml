@@ -59,7 +59,7 @@
             <Insets right="10.0" />
          </GridPane.margin></Button>
       <Label text="Date Of Birth:" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-      <DatePicker fx:id="birthDatePicker" prefHeight="25.0" prefWidth="461.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+      <DatePicker fx:id="birthDatePicker" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="461.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
          <GridPane.margin>
             <Insets left="10.0" right="10.0" />
          </GridPane.margin>

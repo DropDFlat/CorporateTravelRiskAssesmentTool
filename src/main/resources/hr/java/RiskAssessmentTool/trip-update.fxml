@@ -46,7 +46,7 @@
          </GridPane.margin></Button>
       <Label text="End date:" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
       <Label text="Add employees:" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-      <ListView fx:id="addEmployeeListView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+      <ListView fx:id="addEmployeeListView" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </GridPane.margin>
@@ -64,17 +64,17 @@
       <Label text="Remove employees:" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
       <Label text="Add destinations:" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
       <Label text="Remove destinations:" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
-      <ListView fx:id="removeEmployeeListView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+      <ListView fx:id="removeEmployeeListView" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
          <GridPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </GridPane.margin>
       </ListView>
-      <ListView fx:id="addDestinationListView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+      <ListView fx:id="addDestinationListView" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
          <GridPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </GridPane.margin>
       </ListView>
-      <ListView fx:id="removeDestinationListView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+      <ListView fx:id="removeDestinationListView" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
          <GridPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </GridPane.margin>

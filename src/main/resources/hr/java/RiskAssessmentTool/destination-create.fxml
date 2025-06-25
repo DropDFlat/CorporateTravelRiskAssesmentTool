@@ -42,7 +42,7 @@
       </TextField>
       <Button mnemonicParsing="false" onAction="#saveDestination" text="Create" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
       <Label text="Risks:" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-      <ListView fx:id="riskListView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <ListView fx:id="riskListView" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </GridPane.margin>

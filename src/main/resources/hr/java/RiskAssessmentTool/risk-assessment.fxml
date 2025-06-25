@@ -45,7 +45,7 @@
             <TableColumn fx:id="descriptionTableColumn" maxWidth="1.7976931348623157E308" prefWidth="227.0" text="Report" />
         </columns>
       </TableView>
-      <ComboBox fx:id="tripComboBox" onAction="#tripSelected" prefHeight="25.0" prefWidth="444.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <ComboBox fx:id="tripComboBox" maxWidth="1.7976931348623157E308" onAction="#tripSelected" prefHeight="25.0" prefWidth="444.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets left="10.0" right="10.0" />
          </GridPane.margin>
@@ -72,17 +72,17 @@
             <Insets left="10.0" right="10.0" />
          </GridPane.margin>
       </TextField>
-      <DatePicker fx:id="assessmentDatePicker" prefHeight="25.0" prefWidth="380.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+      <DatePicker fx:id="assessmentDatePicker" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="380.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
          <GridPane.margin>
             <Insets left="10.0" right="10.0" />
          </GridPane.margin>
       </DatePicker>
-      <ComboBox fx:id="employeeComboBox" prefHeight="25.0" prefWidth="418.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+      <ComboBox fx:id="employeeComboBox" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="418.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets left="10.0" right="10.0" />
          </GridPane.margin>
       </ComboBox>
-      <ComboBox fx:id="riskTypeComboBox" prefHeight="25.0" prefWidth="418.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+      <ComboBox fx:id="riskTypeComboBox" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="418.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
          <GridPane.margin>
             <Insets left="10.0" right="10.0" />
          </GridPane.margin>

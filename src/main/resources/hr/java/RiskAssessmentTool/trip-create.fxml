@@ -34,24 +34,24 @@
       <Label text="Employees:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
       <Label text="Destinations:" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
       <Label text="Start date:" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-      <ListView fx:id="employeeListView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <ListView fx:id="employeeListView" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <GridPane.margin>
             <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
          </GridPane.margin>
       </ListView>
-      <ListView fx:id="destinationListView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <ListView fx:id="destinationListView" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
          </GridPane.margin>
       </ListView>
       <Button mnemonicParsing="false" onAction="#saveTrip" text="Create" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-      <DatePicker fx:id="startDatePicker" prefHeight="25.0" prefWidth="389.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+      <DatePicker fx:id="startDatePicker" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="389.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets left="10.0" right="10.0" />
          </GridPane.margin>
       </DatePicker>
       <Label text="End date:" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-      <DatePicker fx:id="endDatePicker" prefHeight="25.0" prefWidth="389.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+      <DatePicker fx:id="endDatePicker" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="389.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
          <GridPane.margin>
             <Insets left="10.0" right="10.0" />
          </GridPane.margin>
