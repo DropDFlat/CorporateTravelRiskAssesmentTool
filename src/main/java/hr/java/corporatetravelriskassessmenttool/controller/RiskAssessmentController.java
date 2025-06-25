@@ -88,6 +88,7 @@ public class RiskAssessmentController implements RoleAware{
         employeeComboBox.setItems(FXCollections.observableList(employees));
         assessmentTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         tripComboBox.setItems(FXCollections.observableArrayList(tripRepository.findAll()));
+        filteredRiskAssessments = Optional.empty();
     }
 
     /**
@@ -169,47 +170,51 @@ public class RiskAssessmentController implements RoleAware{
      * Displays error messages if inputs are invalid.
      */
     public void filterAssessments(){
-        if(filteredRiskAssessments.isEmpty()) return;
-        List<RiskAssessment<Person, Risk>> assessments = filteredRiskAssessments.get();
-        String type = riskTypeComboBox.getValue();
-        switch(type){
-            case ENVIRONMENTAL_TYPE:
-                assessments = assessments.stream()
-                        .filter(riskAssessment -> riskAssessment.getRisk() instanceof EnvironmentalRisk)
-                        .toList();
-                break;
-            case HEALTH_TYPE:
-                assessments = assessments.stream()
-                        .filter(riskAssessment -> riskAssessment.getRisk() instanceof HealthRisk)
-                        .toList();
-                break;
-            case POLITICAL_TYPE:
-                assessments = assessments.stream()
-                        .filter(riskAssessment -> riskAssessment.getRisk() instanceof PoliticalRisk)
-                        .toList();
-                break;
-            default:
-        }
-        if(!riskScoreTextField.getText().isEmpty()){
-            try {
-                BigDecimal riskScore = new BigDecimal(riskScoreTextField.getText());
-                assessments = assessments.stream().filter(assessment ->
-                    assessment.getRisk().calculateRisk().compareTo(riskScore) < 0
-                ).toList();
-            }catch(NumberFormatException e){
-                log.warn("Invalid score input when trying to filter employees", e);
-                ValidationUtils.showError("Invalid salary format", "Please enter a valid risk score (e.g., 20.00)");
+        if(filteredRiskAssessments.isPresent()) {
+            List<RiskAssessment<Person, Risk>> assessments = filteredRiskAssessments.get();
+            String type = riskTypeComboBox.getValue();
+            switch (type) {
+                case ENVIRONMENTAL_TYPE:
+                    assessments = assessments.stream()
+                            .filter(riskAssessment -> riskAssessment.getRisk() instanceof EnvironmentalRisk)
+                            .toList();
+                    break;
+                case HEALTH_TYPE:
+                    assessments = assessments.stream()
+                            .filter(riskAssessment -> riskAssessment.getRisk() instanceof HealthRisk)
+                            .toList();
+                    break;
+                case POLITICAL_TYPE:
+                    assessments = assessments.stream()
+                            .filter(riskAssessment -> riskAssessment.getRisk() instanceof PoliticalRisk)
+                            .toList();
+                    break;
+                default:
             }
+            if (!riskScoreTextField.getText().isEmpty()) {
+                try {
+                    BigDecimal riskScore = new BigDecimal(riskScoreTextField.getText());
+                    assessments = assessments.stream().filter(assessment ->
+                            assessment.getRisk().calculateRisk().compareTo(riskScore) < 0
+                    ).toList();
+                } catch (NumberFormatException e) {
+                    log.warn("Invalid score input when trying to filter employees", e);
+                    ValidationUtils.showError("Invalid salary format", "Please enter a valid risk score (e.g., 20.00)");
+                }
+            }
+            Optional<LocalDate> assessmentDate = Optional.ofNullable(assessmentDatePicker.getValue());
+            if (assessmentDate.isPresent() && !assessmentDate.get().toString().isEmpty()) {
+                assessments = assessments.stream()
+                        .filter(riskAssessment -> riskAssessment.getAssessmentDate().equals(assessmentDate.get()))
+                        .toList();
+            }
+            if (!employeeComboBox.getSelectionModel().isEmpty()) {
+                assessments = assessments.stream().filter(riskAssessment -> riskAssessment.getPerson().getId()
+                        .equals(employeeComboBox.getSelectionModel().getSelectedItem().getId())).toList();
+            }
+            ObservableList<RiskAssessment<Person, Risk>> assessmentObservableList = FXCollections.observableList(assessments);
+            assessmentTableView.setItems(assessmentObservableList);
         }
-        Optional<LocalDate> assessmentDate = Optional.ofNullable(assessmentDatePicker.getValue());
-        if(assessmentDate.isPresent() && !assessmentDate.get().toString().isEmpty()) {
-            assessments = assessments.stream()
-                    .filter(riskAssessment -> riskAssessment.getAssessmentDate().equals(assessmentDate.get()))
-                    .toList();
-        }
-        ObservableList<RiskAssessment<Person, Risk>> assessmentObservableList = FXCollections.observableList(assessments);
-        assessmentTableView.setItems(assessmentObservableList);
-
     }
 
     /**

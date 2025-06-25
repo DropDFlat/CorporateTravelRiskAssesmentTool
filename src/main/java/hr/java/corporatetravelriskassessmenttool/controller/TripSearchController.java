@@ -64,8 +64,6 @@ public class TripSearchController implements RoleAware {
     private TableColumn<Trip<Person>, String> employeeTableColumn;
     @FXML
     private TableColumn<Trip<Person>, String> destinationTableColumn;
-    @FXML
-    private Label testLabel;
     private User loggedUser;
     AbstractRepository<Trip<Person>> tripRepository = new TripRepository<>();
     AbstractRepository<Employee> employeeRepository = new EmployeeRepository<>();
