@@ -64,6 +64,8 @@ public class TripSearchController implements RoleAware {
     private TableColumn<Trip<Person>, String> employeeTableColumn;
     @FXML
     private TableColumn<Trip<Person>, String> destinationTableColumn;
+    @FXML
+    private Label testLabel;
     private User loggedUser;
     AbstractRepository<Trip<Person>> tripRepository = new TripRepository<>();
     AbstractRepository<Employee> employeeRepository = new EmployeeRepository<>();
@@ -218,6 +220,7 @@ public class TripSearchController implements RoleAware {
             TripUpdateController controller = loader.getController();
             controller.setUser(loggedUser);
             controller.setTrip(trip);
+            controller.setParentController(this);
             Stage stage = new Stage();
             stage.setTitle("Update Trip");
             stage.setScene(new Scene(root));
@@ -236,7 +239,7 @@ public class TripSearchController implements RoleAware {
      * the riskiest trip in the table every second.
      */
     private void startHighestRiskTimeline(){
-        FindHighestRiskTripThread thread = new FindHighestRiskTripThread(tripRepository, tripTableView, this);
+        FindHighestRiskTripThread thread = new FindHighestRiskTripThread(tripTableView, this);
         Timeline riskiestTripTimeline = new Timeline(new KeyFrame(Duration.ZERO, e -> {
             Thread runner = new Thread(thread);
             runner.setDaemon(true);
@@ -269,6 +272,19 @@ public class TripSearchController implements RoleAware {
             style = "-fx-background-color: #ffcccc;";
         }
         row.setStyle(style);
+    }
+
+    /**
+     * Reloads the trip table after an update.
+     */
+    public void reloadTripTable() {
+        try{
+            List<Trip<Person>> trips = tripRepository.findAll();
+            tripTableView.setItems(FXCollections.observableArrayList(trips));
+        }catch(RepositoryAccessException e){
+            log.error("Failed to reload trips {}", e.getMessage(), e);
+            ValidationUtils.showError("Failed to reload trips", e.getMessage());
+        }
     }
     /**
      * Sets the logged-in user.

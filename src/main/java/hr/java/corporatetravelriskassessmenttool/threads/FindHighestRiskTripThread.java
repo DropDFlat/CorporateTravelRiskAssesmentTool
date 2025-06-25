@@ -3,19 +3,19 @@ package hr.java.corporatetravelriskassessmenttool.threads;
 import hr.java.corporatetravelriskassessmenttool.controller.TripSearchController;
 import hr.java.corporatetravelriskassessmenttool.model.Person;
 import hr.java.corporatetravelriskassessmenttool.model.Trip;
-import hr.java.corporatetravelriskassessmenttool.repository.AbstractRepository;
-import hr.java.corporatetravelriskassessmenttool.repository.TripRepository;
 import javafx.application.Platform;
 import javafx.scene.control.TableView;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+
 /**
  * Runnable task that finds the trip with the highest aggregated risk
  * from its destinations and updates the provided TableView and controller accordingly.
  * <p>
- * This thread fetches all trips from the repository, calculates the total risk
+ * This thread gets all the trips from the table in the controller and calculates total risk score
  * for each trip by summing the risk values of all associated destinations,
  * and identifies the trip with the highest risk score.
  * It then updates the TableView with all trips, preserving the current selection if any,
@@ -23,20 +23,17 @@ import java.util.Optional;
  * </p>
  */
 public class FindHighestRiskTripThread implements Runnable {
-    private AbstractRepository<Trip<Person>> tripRepository;
     private TableView<Trip<Person>> tripTableView;
     private TripSearchController tripSearchController;
 
     /**
-     * Constructs a new FindHighestRiskTripThread with the specified repository, TableView, and controller.
+     * Constructs a new FindHighestRiskTripThread with the specified TableView, and controller.
      *
-     * @param tripRepository the repository used to fetch trips
      * @param tripTableView the TableView to update with the trip data
      * @param tripSearchController the controller to notify about the riskiest trip
      */
-    public FindHighestRiskTripThread(AbstractRepository<Trip<Person>> tripRepository, TableView<Trip<Person>> tripTableView
+    public FindHighestRiskTripThread(TableView<Trip<Person>> tripTableView
             , TripSearchController tripSearchController) {
-        this.tripRepository = tripRepository;
         this.tripTableView = tripTableView;
         this.tripSearchController = tripSearchController;
     }
@@ -55,11 +52,10 @@ public class FindHighestRiskTripThread implements Runnable {
      */
     @Override
     public void run() {
-        if (tripRepository instanceof TripRepository<Trip<Person>> tr) {
 
-            List<Trip<Person>> allTrips = tr.findAll();
+            List<Trip<Person>> trips = new ArrayList<>(tripTableView.getItems());
 
-            Optional<Trip<Person>> riskiestTrip = allTrips.stream()
+            Optional<Trip<Person>> riskiestTrip = trips.stream()
                     .max(Comparator.comparingDouble(trip ->
                             trip.getDestinations().stream()
                                     .flatMap(destination -> destination.getRisks().stream())
@@ -71,10 +67,10 @@ public class FindHighestRiskTripThread implements Runnable {
                 Trip<Person> selectedTrip = tripTableView.getSelectionModel().getSelectedItem();
                 Long selectedTripId = selectedTrip != null ? selectedTrip.getId() : null;
 
-                tripSearchController.updateTrips(allTrips);
+                tripSearchController.updateTrips(trips);
 
                 if (selectedTripId != null) {
-                    allTrips.stream()
+                    trips.stream()
                             .filter(trip -> trip.getId().equals(selectedTripId))
                             .findFirst()
                             .ifPresent(trip -> tripTableView.getSelectionModel().select(trip));
@@ -83,8 +79,9 @@ public class FindHighestRiskTripThread implements Runnable {
                 tripSearchController.setRiskiestTrip(riskiestTrip);
                 tripTableView.refresh();
             });
-        }
+
     }
+
 
 
 }

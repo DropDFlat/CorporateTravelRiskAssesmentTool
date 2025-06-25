@@ -44,6 +44,7 @@ public class TripUpdateController implements RoleAware {
     private Label warningLabel;
     private Trip<Person> selectedTrip;
     private User loggedUser;
+    private TripSearchController parentController;
     private AbstractRepository<Trip<Person>> tripRepository = new TripRepository<>();
     private AbstractRepository<Destination> destinationRepository = new DestinationRepository<>();
     private AbstractRepository<Employee> employeeRepository = new EmployeeRepository<>();
@@ -73,6 +74,14 @@ public class TripUpdateController implements RoleAware {
         }
     }
 
+    /**
+     * Sets a reference to the parent controller in order to refresh the trip table
+     * in the search controller after an update is made.
+     * @param controller the controller that launched this screen.
+     */
+    public void setParentController(TripSearchController controller) {
+        parentController = controller;
+    }
     /**
      * Populates all input fields with current trip data.
      */
@@ -130,6 +139,9 @@ public class TripUpdateController implements RoleAware {
                         "Are you sure you want to update this trip?");
                 if (confirm.isPresent() && confirm.get() == ButtonType.OK) {
                     tripRepository.update(trip, loggedUser);
+                    if(parentController != null){
+                        parentController.reloadTripTable();
+                    }
                     showSuccess(trip);
                 }
             } catch (RepositoryAccessException e) {
