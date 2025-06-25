@@ -16,6 +16,7 @@ public class ChangelogEntry implements Serializable {
     private LocalDateTime timestamp;
 
     /**
+     * Constructs a new ChangelogEntry.
      *
      * @param username the username of the user who performed the action.
      * @param role the role of the user
@@ -32,74 +33,84 @@ public class ChangelogEntry implements Serializable {
     }
 
     /**
+     * Returns the role that made the change.
      *
-     * @return
+     * @return the role that made the change
      */
     public String getRole() {
         return role;
     }
 
     /**
+     * Sets the role that made the change.
      *
-     * @param role
+     * @param role the role to be set
      */
     public void setRole(String role) {
         this.role = role;
     }
 
     /**
+     * Returns the username of the user that made the change.
      *
-     * @return
+     * @return the username
      */
     public String getUsername() {
         return username;
     }
 
     /**
+     * Sets the username of the user that made the change.
      *
-     * @param username
+     * @param username the username to be set
      */
     public void setUsername(String username) {
         this.username = username;
     }
 
     /**
-     * @return
+     * Returns the action that was taken.
+     * @return the action that was taken
      */
     public String getAction() {
         return action;
     }
 
     /**
-     * @param action
+     * Sets the action that was taken.
+     * @param action the action to be set
      */
     public void setAction(String action) {
         this.action = action;
     }
 
     /**
-     * @return
+     * Returns a message regarding the entity that was changed.
+     * @return the message describing the entity that was changed.
      */
     public String getMessage() {
         return message;
     }
 
     /**
-     * @param message
+     * Sets the message describing the entity that was changed.
+     * @param message the message describing the change to be set
      */
     public void setMessage(String message) {
         this.message = message;
     }
 
     /**
-     * @return
+     * Returns the timestamp of when the change occurred.
+     * @return the time that the change occurred
      */
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
     /**
-     * @param timestamp
+     * Sets the timestamp when the change occurred.
+     * @param timestamp the timestamp to be set
      */
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;

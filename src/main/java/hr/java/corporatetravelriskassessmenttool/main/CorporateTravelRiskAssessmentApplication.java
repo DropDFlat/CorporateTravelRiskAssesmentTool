@@ -1,10 +1,15 @@
 package hr.java.corporatetravelriskassessmenttool.main;
 
 import hr.java.corporatetravelriskassessmenttool.changelog.ChangelogRepository;
+import hr.java.corporatetravelriskassessmenttool.threads.FindLatestChangeThread;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +34,8 @@ public class CorporateTravelRiskAssessmentApplication extends Application {
     /**
      * Starts the JavaFX application.
      * Loads the initial FXML view and sets up the main stage.
-     *
+     * Also starts the FindLatestChangeThread, which sets the title
+     * as the latest change found in the changelog file.
      * @param stage the primary stage for this application
      * @throws IOException if loading the FXML view fails
      */
@@ -42,6 +48,16 @@ public class CorporateTravelRiskAssessmentApplication extends Application {
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
+        Timeline latestChangeTimeline = new Timeline(
+                new KeyFrame(Duration.ZERO, e -> {
+                    Thread runner = new Thread((new FindLatestChangeThread(stage, changelogRepository)));
+                    runner.setDaemon(true);
+                    runner.start();
+                }),
+                new KeyFrame(Duration.seconds(5))
+        );
+        latestChangeTimeline.setCycleCount(Animation.INDEFINITE);
+        latestChangeTimeline.play();
     }
     /**
      * Main method that launches the JavaFX application.

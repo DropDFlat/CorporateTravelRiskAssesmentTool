@@ -83,6 +83,5 @@
             <Insets left="20.0" />
          </GridPane.margin>
       </Button>
-      <Label fx:id="testLabel" text="Label" />
    </children>
 </GridPane>

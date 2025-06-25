@@ -94,8 +94,8 @@ public class HealthRiskHandler {
             healthStmt.setBigDecimal(1, updatedRisk.getSeverity());
             healthStmt.setLong(2, updatedRisk.getId());
             healthStmt.executeUpdate();
-            con.commit();
             ChangelogUtil.logHealthRiskUpdate(user, existingRisk, updatedRisk);
+            con.commit();
         } catch (SQLException e) {
             con.rollback();
             throw new RepositoryAccessException(e);

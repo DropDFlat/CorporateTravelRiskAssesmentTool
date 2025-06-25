@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Handles storage and retrieval of changelog entries.
@@ -21,7 +22,7 @@ public class ChangelogRepository {
      *
      * @param entry the entry to log
      */
-    public void logChange(ChangelogEntry entry) {
+    public synchronized void logChange(ChangelogEntry entry) {
         List<ChangelogEntry> entries = readAll();
         entries.add(entry);
         try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(LOG_FILE))){
@@ -32,10 +33,11 @@ public class ChangelogRepository {
     }
 
     /**
-     * Reads and returns all changelog entries from the log file.
+     * Reads and returns all changelog entries from the changelog file.
+     *
      * @return list of all {@link ChangelogEntry} objects from the log file.
      */
-    public List<ChangelogEntry> readAll() {
+    public synchronized List<ChangelogEntry> readAll() {
         File file = new File(LOG_FILE);
         if(!file.exists()) return new ArrayList<>();
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
@@ -44,6 +46,17 @@ public class ChangelogRepository {
             log.error("Error reading log file", e);
             return new ArrayList<>();
         }
+    }
+
+    /**
+     * Reads and returns the last entry founds in the changelog file.
+     *
+     * @return the latest Changelog entry
+     */
+    public synchronized Optional<ChangelogEntry> readLastEntry(){
+        List<ChangelogEntry> entries = readAll();
+        if(!entries.isEmpty()) return Optional.ofNullable(entries.get(entries.size() - 1));
+        return Optional.empty();
     }
 }
 

@@ -28,7 +28,6 @@ public class FindHighestRiskTripThread implements Runnable {
 
     /**
      * Constructs a new FindHighestRiskTripThread with the specified TableView, and controller.
-     *
      * @param tripTableView the TableView to update with the trip data
      * @param tripSearchController the controller to notify about the riskiest trip
      */
@@ -42,7 +41,6 @@ public class FindHighestRiskTripThread implements Runnable {
      * <p>
      * This method performs the following steps:
      * <ul>
-     *   <li>Fetches all trips from the repository.</li>
      *   <li>Calculates the aggregated risk score for each trip by summing risks from all destinations.</li>
      *   <li>Finds the trip with the highest risk score.</li>
      *   <li>Updates the TableView with all trips, preserving the previously selected trip if any.</li>

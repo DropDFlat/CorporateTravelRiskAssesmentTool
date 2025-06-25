@@ -236,7 +236,7 @@ public class TripSearchController implements RoleAware {
     }
     /**
      * Starts a background timeline that continuously evaluates and highlights
-     * the riskiest trip in the table every second.
+     * the riskiest trip in the table every 5 seconds.
      */
     private void startHighestRiskTimeline(){
         FindHighestRiskTripThread thread = new FindHighestRiskTripThread(tripTableView, this);

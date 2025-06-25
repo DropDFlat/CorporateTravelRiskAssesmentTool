@@ -95,8 +95,8 @@ public class PoliticalRiskHandler {
             healthStmt.setLong(2, updatedRisk.getUnrestIndex());
             healthStmt.setLong(3, updatedRisk.getId());
             healthStmt.executeUpdate();
+            ChangelogUtil.logPoliticalRiskUpdate(user, existingRisk, updatedRisk);
             con.commit();
-            ChangelogUtil.logPoliticalRiskUpdate(user, existingRisk, existingRisk);
         } catch (SQLException e) {
             con.rollback();
             throw new RepositoryAccessException(e);

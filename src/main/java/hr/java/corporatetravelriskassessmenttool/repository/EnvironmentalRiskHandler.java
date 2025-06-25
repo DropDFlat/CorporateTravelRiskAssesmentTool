@@ -110,8 +110,8 @@ public class EnvironmentalRiskHandler {
             healthStmt.setBigDecimal(2, updatedRisk.getDisasterProbability());
             healthStmt.setLong(3, updatedRisk.getId());
             healthStmt.executeUpdate();
-            con.commit();
             ChangelogUtil.logEnvironmentalRiskUpdate(user, existingRisk, updatedRisk);
+            con.commit();
         } catch (SQLException e) {
             con.rollback();
             throw new RepositoryAccessException(e);
