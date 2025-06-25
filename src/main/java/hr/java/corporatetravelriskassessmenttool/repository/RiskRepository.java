@@ -112,10 +112,10 @@ public class RiskRepository<T extends Risk> extends AbstractRepository<T> {
                 case HealthRisk healthRisk -> new HealthRiskHandler().save(healthRisk, insertRiskSql, con, user);
                 case PoliticalRisk politicalRisk -> new PoliticalRiskHandler().save(politicalRisk, insertRiskSql, con, user);
                 case EnvironmentalRisk environmentalRisk -> new EnvironmentalRiskHandler().save(environmentalRisk, insertRiskSql, con, user);
-                default -> throw new IllegalArgumentException("Unsupported entity type " + entity.getClass().getName());
+                default -> throw new UnknownRiskTypeException("Unsupported entity type " + entity.getClass().getName());
             }
-        }catch(SQLException e){
-            throw new RepositoryAccessException(e);
+        }catch(SQLException | UnknownRiskTypeException e){
+            throw new RepositoryAccessException(e.getMessage(), e);
         }catch(DatabaseConfigurationException e){
             throw new RepositoryAccessException(DATABASE_ERROR_STRING, e);
         }
@@ -137,17 +137,17 @@ public class RiskRepository<T extends Risk> extends AbstractRepository<T> {
         Risk existingRisk= findById(entity.getId());
         waitForDbAccess();
         try(Connection con = connectToDb()) {
-            if (entity instanceof HealthRisk healthRisk) {
-                new HealthRiskHandler().update(healthRisk, (HealthRisk) existingRisk, con, user);
+            switch (entity) {
+                case HealthRisk healthRisk ->
+                        new HealthRiskHandler().update(healthRisk, (HealthRisk) existingRisk, con, user);
+                case  PoliticalRisk politicalRisk ->
+                        new PoliticalRiskHandler().update(politicalRisk, (PoliticalRisk) existingRisk, con, user);
+                case EnvironmentalRisk environmentalRisk ->
+                        new EnvironmentalRiskHandler().update(environmentalRisk, (EnvironmentalRisk) existingRisk, con, user);
+                default -> throw new UnknownRiskTypeException("Unsupported entity type " + entity.getClass().getName());
             }
-            if(entity instanceof PoliticalRisk politicalRisk) {
-                new PoliticalRiskHandler().update(politicalRisk, (PoliticalRisk) existingRisk, con, user);
-            }
-            if(entity instanceof EnvironmentalRisk environmentalRisk) {
-                new EnvironmentalRiskHandler().update(environmentalRisk, (EnvironmentalRisk) existingRisk, con, user);
-            }
-        }catch(SQLException e){
-            throw new RepositoryAccessException(e);
+        }catch(SQLException | UnknownRiskTypeException e){
+            throw new RepositoryAccessException(e.getMessage(), e);
         }
         finally{
             databaseAccessInProgress = false;
