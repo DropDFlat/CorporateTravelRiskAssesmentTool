@@ -88,7 +88,8 @@ public class TripSearchController implements RoleAware {
      * @param newTrips a list of updated {@code Trip} objects
      */
     public void updateTrips(List<Trip<Person>> newTrips){
-        this.allTrips = new ArrayList<>(newTrips);
+        this.allTrips.clear();
+        this.allTrips.addAll(newTrips);
         filterTrips();
     }
     /**
@@ -112,7 +113,6 @@ public class TripSearchController implements RoleAware {
         employeeListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         destinationListView.setItems(FXCollections.observableList(destinations));
         destinationListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
         nameTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         startDateTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStartDate().format(format)));
@@ -165,28 +165,33 @@ public class TripSearchController implements RoleAware {
      * Filter trips by entered search criteria
      */
     public void filterTrips() {
-        List<Trip<Person>> result = new ArrayList<>(allTrips);
-        Set<Employee> selectedEmployees = new HashSet<>(employeeListView.getSelectionModel().getSelectedItems());
-        if(!selectedEmployees.isEmpty()) result = result.stream()
-                    .filter(trip -> trip.getEmployees().stream().anyMatch(selectedEmployees::contains))
-                    .toList();
-        Set<Destination> selectedDestinations = new HashSet<>(destinationListView.getSelectionModel().getSelectedItems());
-        if(!selectedDestinations.isEmpty()) result = result.stream()
-                    .filter(trip -> trip.getDestinations().stream().anyMatch(selectedDestinations::contains))
-                    .toList();
-        String name = nameTextField.getText();
-        if(!name.isEmpty()) result = result.stream()
-                    .filter(trip -> trip.getName().toLowerCase().contains(name.toLowerCase()))
-                    .toList();
-        Optional<LocalDate> startDate = Optional.ofNullable(startDatePicker.getValue());
-        if(startDate.isPresent()) result = result.stream()
-                    .filter(trip -> trip.getStartDate().isAfter(startDate.get()))
-                    .toList();
-        Optional<LocalDate> endDate = Optional.ofNullable(endDatePicker.getValue());
-        if(endDate.isPresent()) result = result.stream()
-                    .filter(trip -> trip.getEndDate().isBefore(endDate.get()))
-                    .toList();
-        tripTableView.setItems(FXCollections.observableList(result));
+        try {
+            List<Trip<Person>> result = tripRepository.findAll();
+            Set<Employee> selectedEmployees = new HashSet<>(employeeListView.getSelectionModel().getSelectedItems());
+            if(!selectedEmployees.isEmpty()) result = result.stream()
+                        .filter(trip -> trip.getEmployees().stream().anyMatch(selectedEmployees::contains))
+                        .toList();
+            Set<Destination> selectedDestinations = new HashSet<>(destinationListView.getSelectionModel().getSelectedItems());
+            if(!selectedDestinations.isEmpty()) result = result.stream()
+                        .filter(trip -> trip.getDestinations().stream().anyMatch(selectedDestinations::contains))
+                        .toList();
+            String name = nameTextField.getText();
+            if(!name.isEmpty()) result = result.stream()
+                        .filter(trip -> trip.getName().toLowerCase().contains(name.toLowerCase()))
+                        .toList();
+            Optional<LocalDate> startDate = Optional.ofNullable(startDatePicker.getValue());
+            if(startDate.isPresent()) result = result.stream()
+                        .filter(trip -> trip.getStartDate().isAfter(startDate.get()))
+                        .toList();
+            Optional<LocalDate> endDate = Optional.ofNullable(endDatePicker.getValue());
+            if(endDate.isPresent()) result = result.stream()
+                        .filter(trip -> trip.getEndDate().isBefore(endDate.get()))
+                        .toList();
+            tripTableView.setItems(FXCollections.observableList(result));
+        }catch(RepositoryAccessException e){
+            log.error(e.getMessage(), e);
+            ValidationUtils.showError("Filtering failed", e.getMessage());
+        }
     }
     /**
      * Deletes the selected trip from the database and table.
@@ -280,7 +285,9 @@ public class TripSearchController implements RoleAware {
     public void reloadTripTable() {
         try{
             List<Trip<Person>> trips = tripRepository.findAll();
-            tripTableView.setItems(FXCollections.observableArrayList(trips));
+            allTrips.clear();
+            allTrips.addAll(trips);
+            filterTrips();
         }catch(RepositoryAccessException e){
             log.error("Failed to reload trips {}", e.getMessage(), e);
             ValidationUtils.showError("Failed to reload trips", e.getMessage());

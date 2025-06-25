@@ -36,13 +36,13 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <TableView fx:id="assessmentTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="9">
+      <TableView fx:id="assessmentTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.vgrow="ALWAYS">
         <columns>
-          <TableColumn fx:id="employeeTableColumn" prefWidth="111.0" text="Employee" />
-          <TableColumn fx:id="riskTypeTableColumn" prefWidth="95.0" text="Risk type" />
-            <TableColumn fx:id="riskScoreTableColumn" prefWidth="86.0" text="Risk score" />
-            <TableColumn fx:id="assessmentDateTableColumn" prefWidth="130.0" text="Assessment date" />
-            <TableColumn fx:id="descriptionTableColumn" prefWidth="227.0" text="Report" />
+          <TableColumn fx:id="employeeTableColumn" maxWidth="1.7976931348623157E308" prefWidth="111.0" text="Employee" />
+          <TableColumn fx:id="riskTypeTableColumn" maxWidth="1.7976931348623157E308" prefWidth="95.0" text="Risk type" />
+            <TableColumn fx:id="riskScoreTableColumn" maxWidth="1.7976931348623157E308" prefWidth="86.0" text="Risk score" />
+            <TableColumn fx:id="assessmentDateTableColumn" maxWidth="1.7976931348623157E308" prefWidth="130.0" text="Assessment date" />
+            <TableColumn fx:id="descriptionTableColumn" maxWidth="1.7976931348623157E308" prefWidth="227.0" text="Report" />
         </columns>
       </TableView>
       <ComboBox fx:id="tripComboBox" onAction="#tripSelected" prefHeight="25.0" prefWidth="444.0" GridPane.columnIndex="1" GridPane.rowIndex="1">

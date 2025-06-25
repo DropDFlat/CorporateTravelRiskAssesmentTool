@@ -118,7 +118,7 @@ public class EmployeeSearchController implements RoleAware {
         if(!salaryTextField.getText().isEmpty()){
             try {
                 BigDecimal salary = new BigDecimal(salaryTextField.getText());
-                employeeList = employeeList.stream().filter(employee -> employee.getSalary().equals(salary)).toList();
+                employeeList = employeeList.stream().filter(employee -> employee.getSalary().compareTo(salary) > 0).toList();
             }catch(NumberFormatException e){
                 log.warn("Invalid salary input when trying to filter employees", e);
                 ValidationUtils.showError("Invalid salary format", "Please enter a valid salary (e.g., 5000.00)");
@@ -127,7 +127,7 @@ public class EmployeeSearchController implements RoleAware {
         Optional<LocalDate> dateOfBirth = Optional.ofNullable(birthDatePicker.getValue());
         if(dateOfBirth.isPresent() && !dateOfBirth.get().toString().isEmpty()) {
             employeeList = employeeList.stream()
-                    .filter(employee -> employee.getDateOfBirth().equals(dateOfBirth.get()))
+                    .filter(employee -> employee.getDateOfBirth().isAfter(dateOfBirth.get()))
                     .toList();
         }
         ObservableList<Employee> employeeObservableList = FXCollections.observableList(employeeList);
