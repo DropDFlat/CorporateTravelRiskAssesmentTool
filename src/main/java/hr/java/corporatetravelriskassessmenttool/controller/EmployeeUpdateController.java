@@ -106,6 +106,7 @@ public class EmployeeUpdateController implements RoleAware {
                         "An unexpected error occurred while updating employee.\n Please try again.");
             }
         }
+        populateFields();
     }
 
     /**

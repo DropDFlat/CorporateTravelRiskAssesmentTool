@@ -28,6 +28,7 @@ public class Trip<T extends Person> extends Entity implements Warnable{
         this.startDate = builder.startDate;
         this.endDate = builder.endDate;
         this.name = builder.name;
+        this.warningMessage = "";
     }
     /**
      * Gets the name of the trip.

@@ -40,6 +40,8 @@ public class TripUpdateController implements RoleAware {
     private DatePicker startDatePicker;
     @FXML
     private DatePicker endDatePicker;
+    @FXML
+    private Label warningLabel;
     private Trip<Person> selectedTrip;
     private User loggedUser;
     private AbstractRepository<Trip<Person>> tripRepository = new TripRepository<>();
@@ -90,6 +92,8 @@ public class TripUpdateController implements RoleAware {
             removeEmployee.forEach(addEmployee::remove);
             removeEmployeeListView.setItems(removeEmployee);
             addEmployeeListView.setItems(FXCollections.observableArrayList(addEmployee));
+            if(selectedTrip.hasWarning()) warningLabel.setText(selectedTrip.getWarningMessage());
+            else warningLabel.setText("");
         }catch(EmptyRepositoryException e){
             log.error(e.getMessage(), e);
             ValidationUtils.showError("Employee not found!", e.getMessage());
@@ -133,6 +137,7 @@ public class TripUpdateController implements RoleAware {
                 ValidationUtils.showError("Update failed", e.getMessage());
             }
         }
+        populateFields();
     }
 
     /**

@@ -35,15 +35,10 @@
             <Insets left="10.0" right="10.0" />
          </GridPane.margin>
       </TextField>
-      <Button mnemonicParsing="false" onAction="#updateRisk" text="Update" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+      <Button mnemonicParsing="false" onAction="#updateRisk" text="Update" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets right="10.0" />
          </GridPane.margin></Button>
-      <Button mnemonicParsing="false" onAction="#populateFields" text="Refresh" GridPane.columnIndex="1" GridPane.rowIndex="4">
-         <GridPane.margin>
-            <Insets left="10.0" />
-         </GridPane.margin>
-      </Button>
       <ComboBox fx:id="riskLevelComboBox" prefHeight="25.0" prefWidth="579.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <GridPane.margin>
             <Insets left="10.0" right="10.0" />

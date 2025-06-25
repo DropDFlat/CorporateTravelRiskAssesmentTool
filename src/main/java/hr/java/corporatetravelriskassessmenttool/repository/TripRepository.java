@@ -47,11 +47,9 @@ public class TripRepository<T extends Trip<Person>> extends AbstractRepository<T
                 ps.setLong(1, id);
                 try(ResultSet rs = ps.executeQuery()){
                     if(!rs.next()) throw new EmptyRepositoryException("No trip found with id: " + id);
-                    trip = extractTripFromResultSet(rs);
+                    trip = createTrip(con, rs, allRisks);
                 }
             }
-            trip.setEmployees(TripDataFetcher.fetchEmployees(con, trip.getId()));
-            trip.setDestinations(TripDataFetcher.fetchDestinations(con, trip.getId(), allRisks));
             return (T) trip;
         }catch(SQLException e){
             throw new RepositoryAccessException(e);
@@ -215,7 +213,7 @@ public class TripRepository<T extends Trip<Person>> extends AbstractRepository<T
         Trip<Person> trip =new Trip.TripBuilder<Person>().setId(id).setName(name).setEmployees(new HashSet<>()).setDestinations(new HashSet<>())
                 .setStartDate(startDate).setEndDate(endDate).build();
         if(startDate.isAfter(endDate)){
-            trip.setWarningMessage("Start date if after end date");
+            trip.setWarningMessage(trip.getWarningMessage()+"End date is after start date! ");
         }
         return trip;
     }
@@ -233,6 +231,8 @@ public class TripRepository<T extends Trip<Person>> extends AbstractRepository<T
         Trip<Person> trip = extractTripFromResultSet(rs);
         trip.setEmployees(TripDataFetcher.fetchEmployees(con, trip.getId()));
         trip.setDestinations(TripDataFetcher.fetchDestinations(con, trip.getId(), allRisks));
+        if(trip.getEmployees().isEmpty()) trip.setWarningMessage(trip.getWarningMessage()+"No employees! ");
+        if(trip.getDestinations().isEmpty()) trip.setWarningMessage(trip.getWarningMessage()+"No destinations! ");
         return trip;
     }
     /**

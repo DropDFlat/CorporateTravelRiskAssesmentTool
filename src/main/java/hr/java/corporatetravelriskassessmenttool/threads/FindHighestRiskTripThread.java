@@ -5,7 +5,7 @@ import hr.java.corporatetravelriskassessmenttool.model.Person;
 import hr.java.corporatetravelriskassessmenttool.model.Trip;
 import hr.java.corporatetravelriskassessmenttool.repository.AbstractRepository;
 import hr.java.corporatetravelriskassessmenttool.repository.TripRepository;
-import javafx.collections.FXCollections;
+import javafx.application.Platform;
 import javafx.scene.control.TableView;
 
 import java.util.Comparator;
@@ -57,8 +57,6 @@ public class FindHighestRiskTripThread implements Runnable {
     public void run() {
         if (tripRepository instanceof TripRepository<Trip<Person>> tr) {
 
-            Trip<Person> selectedTrip = tripTableView.getSelectionModel().getSelectedItem();
-            Long selectedTripId = selectedTrip != null ? selectedTrip.getId() : null;
             List<Trip<Person>> allTrips = tr.findAll();
 
             Optional<Trip<Person>> riskiestTrip = allTrips.stream()
@@ -69,19 +67,22 @@ public class FindHighestRiskTripThread implements Runnable {
                                     .sum()
                     ));
 
+            Platform.runLater(() -> {
+                Trip<Person> selectedTrip = tripTableView.getSelectionModel().getSelectedItem();
+                Long selectedTripId = selectedTrip != null ? selectedTrip.getId() : null;
 
-            tripSearchController.updateTrips(allTrips);
+                tripSearchController.updateTrips(allTrips);
 
-            if (selectedTripId != null) {
-                allTrips.stream()
-                        .filter(trip -> trip.getId().equals(selectedTripId))
-                        .findFirst()
-                        .ifPresent(trip -> tripTableView.getSelectionModel().select(trip));
-            }
+                if (selectedTripId != null) {
+                    allTrips.stream()
+                            .filter(trip -> trip.getId().equals(selectedTripId))
+                            .findFirst()
+                            .ifPresent(trip -> tripTableView.getSelectionModel().select(trip));
+                }
 
-            tripSearchController.setRiskiestTrip(riskiestTrip);
-            tripTableView.refresh();
-
+                tripSearchController.setRiskiestTrip(riskiestTrip);
+                tripTableView.refresh();
+            });
         }
     }
 

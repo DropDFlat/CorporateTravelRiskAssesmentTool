@@ -120,6 +120,7 @@ public class DestinationUpdateController implements RoleAware {
                         e.getMessage());
             }
         }
+        populateFields();
     }
 
     /**

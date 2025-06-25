@@ -159,7 +159,6 @@ public class TripSearchController implements RoleAware {
         });
         startHighestRiskTimeline();
     }
-
     /**
      * Filter trips by entered search criteria
      */
@@ -187,7 +186,6 @@ public class TripSearchController implements RoleAware {
                     .toList();
         tripTableView.setItems(FXCollections.observableList(result));
     }
-
     /**
      * Deletes the selected trip from the database and table.
      */
@@ -209,7 +207,6 @@ public class TripSearchController implements RoleAware {
             ValidationUtils.showError("No trip selected", "Select a trip to delete.");
         }
     }
-
     /**
      * Opens the trip update window for editing the selected trip.
      * @param trip the trip to update
@@ -245,7 +242,7 @@ public class TripSearchController implements RoleAware {
             runner.setDaemon(true);
             runner.start();
         }),
-                new KeyFrame(Duration.seconds(1)));
+                new KeyFrame(Duration.seconds(5)));
         riskiestTripTimeline.setCycleCount(Animation.INDEFINITE);
         riskiestTripTimeline.play();
     }

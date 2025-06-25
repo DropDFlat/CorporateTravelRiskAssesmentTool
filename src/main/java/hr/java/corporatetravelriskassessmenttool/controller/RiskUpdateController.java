@@ -126,6 +126,7 @@ public class RiskUpdateController implements RoleAware {
         if(parentController != null){
             parentController.reloadRiskTable();
         }
+        populateFields();
     }
 
     /**

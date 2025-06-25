@@ -5,12 +5,12 @@ INSERT INTO employees (name, date_of_birth, job_title, department, salary) VALUE
 ('Luka Kovač', '1987-06-10', 'Network Administrator', 'IT', 5800.00),
 ('Sara Babić', '1995-03-18', 'Marketing Specialist', 'Marketing', 5000.00);
 
-INSERT INTO risk (id, description, level, type) VALUES
-(1, 'Flood risk due to heavy rainfall', 'High', 'Environmental'),
-(2, 'Airborne disease outbreak', 'Medium', 'Health'),
-(3, 'Civil unrest in the region', 'High', 'Political'),
-(4, 'Wildfire risk due to drought', 'Medium', 'environmental'),
-(5, 'Water contamination', 'Low', 'Health');
+INSERT INTO risk (description, level, type) VALUES
+('Flood risk due to heavy rainfall', 'High', 'Environmental'),
+('Airborne disease outbreak', 'Medium', 'Health'),
+('Civil unrest in the region', 'High', 'Political'),
+('Wildfire risk due to drought', 'Medium', 'environmental'),
+('Water contamination', 'Low', 'Health');
 
 INSERT INTO environmental_risk (risk_id, damage_index, disaster_probability) VALUES
 (1, 90, 0.8),
@@ -23,12 +23,12 @@ INSERT INTO health_risk (risk_id, severity) VALUES
 INSERT INTO political_risk (risk_id, unrest_index, stability_index) VALUES
 (3, 85, 20);
 
-INSERT INTO destinations (id, city, country) VALUES
-(1, 'Jakarta', 'Indonesia'),
-(2, 'Cairo', 'Egypt'),
-(3, 'Los Angeles', 'USA'),
-(4, 'Rio de Janeiro', 'Brazil'),
-(5, 'Nairobi', 'Kenya');
+INSERT INTO destinations (city, country) VALUES
+('Jakarta', 'Indonesia'),
+('Cairo', 'Egypt'),
+('Los Angeles', 'USA'),
+('Rio de Janeiro', 'Brazil'),
+('Nairobi', 'Kenya');
 
 INSERT INTO destination_risk (destination_id, risk_id) VALUES
 (1, 1), -- Jakarta - Flood risk
@@ -39,10 +39,11 @@ INSERT INTO destination_risk (destination_id, risk_id) VALUES
 (5, 2), -- Nairobi - Airborne disease
 (5, 5); -- Nairobi - Water contamination
 
-INSERT INTO trip (id, name, start_date, end_date) VALUES
-(1, 'Jakarta Security Inspection', '2025-06-01', '2025-06-10'),
-(2, 'Cairo Engineering Survey', '2025-07-15', '2025-07-25'),
-(3, 'USA Expansion Tour', '2025-08-05', '2025-08-20');
+INSERT INTO trip (name, start_date, end_date) VALUES
+('Jakarta Security Inspection', '2025-06-01', '2025-06-10'),
+('Cairo Engineering Survey', '2025-07-15', '2025-07-25'),
+('USA Expansion Tour', '2025-08-05', '2025-08-20'),
+('Broken', '2025-06-06', '2025-04-04');
 
 INSERT INTO trip_destination (trip_id, destination_id) VALUES
 (1, 1), -- Jakarta
