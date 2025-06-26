@@ -167,11 +167,11 @@ public class TripSearchController implements RoleAware {
             List<Trip<Person>> result = tripRepository.findAll();
             Set<Employee> selectedEmployees = new HashSet<>(employeeListView.getSelectionModel().getSelectedItems());
             if(!selectedEmployees.isEmpty()) result = result.stream()
-                        .filter(trip -> trip.getEmployees().stream().anyMatch(selectedEmployees::contains))
+                        .filter(trip -> trip.getEmployees().containsAll(selectedEmployees))
                         .toList();
             Set<Destination> selectedDestinations = new HashSet<>(destinationListView.getSelectionModel().getSelectedItems());
             if(!selectedDestinations.isEmpty()) result = result.stream()
-                        .filter(trip -> trip.getDestinations().stream().anyMatch(selectedDestinations::contains))
+                        .filter(trip -> trip.getDestinations().containsAll(selectedDestinations))
                         .toList();
             String name = nameTextField.getText();
             if(!name.isEmpty()) result = result.stream()

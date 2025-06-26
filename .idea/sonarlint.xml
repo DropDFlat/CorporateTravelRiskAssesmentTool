@@ -4,6 +4,8 @@
     <option name="fileExclusions">
       <list>
         <option value="DIRECTORY:h2" />
+        <option value="DIRECTORY:logs" />
+        <option value="DIRECTORY:dat" />
       </list>
     </option>
   </component>

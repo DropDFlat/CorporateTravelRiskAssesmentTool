@@ -55,7 +55,7 @@ public class ChangelogRepository {
      */
     public synchronized Optional<ChangelogEntry> readLastEntry(){
         List<ChangelogEntry> entries = readAll();
-        if(!entries.isEmpty()) return Optional.ofNullable(entries.get(entries.size() - 1));
+        if(!entries.isEmpty()) return Optional.ofNullable(entries.getLast());
         return Optional.empty();
     }
 }
